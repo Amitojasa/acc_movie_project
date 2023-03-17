@@ -14,15 +14,19 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class FetchMovies {
-	public static void main(String[] args) {
+class FetchMovies {
+	public void sync() {
 		
 		int stop=1;
 		int pageNumber=1;
 		JSONArray jsonArray = new JSONArray();
 		while(stop==1) {
 			
-			System.out.println(pageNumber);
+			System.out.println("Commented the file writing part, please uncomment it to update the file");
+			System.out.println("Fetching the movies......");
+			System.out.println("Please have patience this will take some time ......");
+			
+//			System.out.println(pageNumber);
 			
 			//country code 129 for USA, 147 is for Canada
 			// URL which is being scrapped for movies data
@@ -160,17 +164,19 @@ public class FetchMovies {
 		}
 		
 		// writing json array to file
-		try (FileWriter file = new FileWriter("movies.json")) {
-			
-            // write json array to file by converting it to string
-            file.write(jsonArray.toJSONString()); 
-            
-            //clearing any buffered data
-            file.flush();
- 
-        } catch (IOException e) {
-        	//handle file exception
-            e.printStackTrace();
-        }
+//		try (FileWriter file = new FileWriter("movies.json")) {
+//			
+//            // write json array to file by converting it to string
+//            file.write(jsonArray.toJSONString()); 
+//            
+//            //clearing any buffered data
+//            file.flush();
+// 
+//        } catch (IOException e) {
+//        	//handle file exception
+//            e.printStackTrace();
+//        }
+	
+		System.out.println("Hurayyyy !!!! Done.");
 	}
 }
