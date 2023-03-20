@@ -20,11 +20,12 @@ class FetchMovies {
 		int stop=1;
 		int pageNumber=1;
 		JSONArray jsonArray = new JSONArray();
+		System.out.println("Commented the file writing part, please uncomment it to update the file");
+		System.out.println("Fetching the movies......");
+		System.out.println("Please have patience this will take some time ......");
+		
 		while(stop==1) {
 			
-			System.out.println("Commented the file writing part, please uncomment it to update the file");
-			System.out.println("Fetching the movies......");
-			System.out.println("Please have patience this will take some time ......");
 			
 //			System.out.println(pageNumber);
 			
@@ -48,7 +49,7 @@ class FetchMovies {
 				
 				
 				// it number of movieItems is 0 then we stop the loop
-				if(movieItems.size()==0) {
+				if(movieItems.size()==0 ) {
 					stop=0;
 					continue;
 				}
@@ -109,8 +110,8 @@ class FetchMovies {
 					}
 					
 					// convert array to json array and insert in json object
-					String genresJsonText = JSONValue.toJSONString(genres); 
-					obj.put("genres",genresJsonText);
+//					String genresJsonText = JSONValue.toJSONString(genres); 
+					obj.put("genres",genres);
 					
 					
 					//similar to cast memebers
@@ -120,8 +121,8 @@ class FetchMovies {
 						cast.add(m.text());
 					}
 			
-					String castJsonText = JSONValue.toJSONString(cast); 
-					obj.put("cast",castJsonText);
+//					String castJsonText = JSONValue.toJSONString(cast); 
+					obj.put("cast",cast);
 					
 					
 					
@@ -132,8 +133,8 @@ class FetchMovies {
 						production.add(m.text());
 					}
 					
-					String productionJsonText = JSONValue.toJSONString(production); 
-					obj.put("production",productionJsonText);
+//					String productionJsonText = JSONValue.toJSONString(production); 
+					obj.put("production",production);
 					
 			
 			
@@ -144,8 +145,8 @@ class FetchMovies {
 						country.add(m.text());
 					}
 					
-					String countriesJsonText = JSONValue.toJSONString(country); 
-					obj.put("country",countriesJsonText);
+//					String countriesJsonText = JSONValue.toJSONString(country); 
+					obj.put("country",country);
 					
 				
 					//add each json object to JSON array
@@ -163,8 +164,8 @@ class FetchMovies {
 			
 		}
 		
-		// writing json array to file
-//		try (FileWriter file = new FileWriter("movies.json")) {
+//		 writing json array to file
+//		try (FileWriter file = new FileWriter("moviesNew.json")) {
 //			
 //            // write json array to file by converting it to string
 //            file.write(jsonArray.toJSONString()); 
