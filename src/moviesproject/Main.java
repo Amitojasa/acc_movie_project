@@ -16,11 +16,12 @@ public class Main {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		FetchMovies fm= new FetchMovies();
-		CreateGraph cg= new CreateGraph();
+		FetchMovies fetchMoviesObj = new FetchMovies();
+		CreateGraph customGraph = new CreateGraph();
+		Search searchMovies = new Search();
 		
 		Scanner scannerObj = new Scanner(System.in);  
-		cg.createGraphFromJson();
+		customGraph.createGraphFromJson();
 		System.out.println("Welcome to the Movie Search Engine\n");
 		
 		
@@ -32,9 +33,9 @@ public class Main {
 			int option = scannerObj.nextInt(); 
 			
 			if(option==1) {
-				fm.sync();
+				fetchMoviesObj.sync();
 			}else if(option==2) {
-				
+				searchMovies.main(customGraph);
 				//search related function
 			}else if(option==3) {
 				//get top movies
