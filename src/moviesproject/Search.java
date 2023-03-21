@@ -19,8 +19,9 @@ public class Search {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter the name of actor: ");
-		System.out.println();
 		String nameOfActor = sc.nextLine();
+		
+		System.out.println();
 		
 		boolean actorIsPresent = customGraph.getSymbolGraphForMoviesWithCast().contains(nameOfActor); 
 		

@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 
 import graphs.Graph;
 import graphs.SymbolGraph;
+import graphs.TST;
 public class CreateGraph {
 	
 	
@@ -38,6 +39,32 @@ public class CreateGraph {
 	 
 	 SymbolGraph sgForMovieCast, sgForMovieGenre;
 	 Graph movieCastGraph, movieGenreGraph;
+	 TST<Set<Integer>> ternarySearchTrie = new TST<Set<Integer>>();
+	 
+	 
+	 public void putMovieInTrie(String nameOfMovie, int currentIndex) {
+		 Set<Integer> indexesOfMovies= new HashSet<Integer>();
+		 if(nameOfMovie.indexOf(' ') != -1) {
+			 String[] wordsInMovies = nameOfMovie.split(" ");
+			 for (String word : wordsInMovies) {
+				 if (!ternarySearchTrie.contains(word)) {
+					 indexesOfMovies.add(currentIndex);
+					 ternarySearchTrie.put(word, indexesOfMovies);
+				 }
+				 else {
+					 for (int index : ternarySearchTrie.get(word)) {
+						 indexesOfMovies.add(index);
+					 }
+					 indexesOfMovies.add(currentIndex);
+					 ternarySearchTrie.put(word, indexesOfMovies);
+				 }
+			 }
+		 } 
+		 else {
+			 indexesOfMovies.add(currentIndex);
+			 ternarySearchTrie.put(nameOfMovie, indexesOfMovies);;
+		 }
+	 }
 	 
 	 public void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
 		
@@ -48,7 +75,6 @@ public class CreateGraph {
 		int currentIndexOfMovie = 0;
 		 
 		for (Object movieObject : arrayOfMoviesWithDetails){
-			
 			  
 		    JSONObject movie = (JSONObject) movieObject;
 		    
@@ -56,6 +82,8 @@ public class CreateGraph {
 		    List<String> tempListToHandleMovieGenre = new ArrayList<String>();
 		    
 		    String name = (String) movie.get("movieName");
+		    
+		    putMovieInTrie(name, currentIndexOfMovie);
 		    
 		    movieNames.add(name);
 		    collectionMovieAndCast.add(name);
