@@ -26,6 +26,7 @@ public class CreateGraph {
 	
 	 List<String> movieNames=new ArrayList<String>();
 	 Set<String> uniqueCast = new HashSet<String>();
+	 Set<String> setOfGenres = new HashSet<String>();
 	 List<String> collectionMovieAndCast=new ArrayList<String>();
 	 List<List<String>> collectionCastRespectToMovie=new ArrayList();
 	 
@@ -65,6 +66,7 @@ public class CreateGraph {
 		    JSONArray genres = (JSONArray) movie.get("genres");
 		    for (Object genre: genres) {
 		    	tempListToHandleMovieGenre.add((String)genre);
+		    	setOfGenres.add((String) genre);
 		    }
 		    
 		    collectionCastRespectToMovie.add(temp);
@@ -74,23 +76,21 @@ public class CreateGraph {
 		 	  
 		sgForMovieCast= new SymbolGraph(collectionCastRespectToMovie);
 		  
-		  sgForMovieGenre = new SymbolGraph(collectionMovieRespectToGenre);
+		sgForMovieGenre = new SymbolGraph(collectionMovieRespectToGenre);
 		    
-		  movieCastGraph = sgForMovieCast.G();
-		  movieGenreGraph = sgForMovieGenre.G();
+		movieCastGraph = sgForMovieCast.G();
+		movieGenreGraph = sgForMovieGenre.G();
 	    
-		  String s = movieCastGraph.toString();
+		String s = movieCastGraph.toString();
 	    
-		  System.out.println("");
-		  if(sgForMovieCast.contains("Nick Preston")) {
-			  Iterable<Integer> t = movieCastGraph.adj(sgForMovieCast.index("Nick Preston"));
-			  for(Integer i : t) {
-				  System.out.println(sgForMovieCast.name(i));        		
-			  }
+		System.out.println("");
+		if(sgForMovieCast.contains("Nick Preston")) {
+			Iterable<Integer> t = movieCastGraph.adj(sgForMovieCast.index("Nick Preston"));
+			for(Integer i : t) {
+				System.out.println(sgForMovieCast.name(i));        		
+			  	}
 		  }
-		    
-		
-		}
+	}
 	
 	
 	public List<String> getAllMovieNames(){
@@ -101,6 +101,9 @@ public class CreateGraph {
 		return (List<String>) uniqueCast;
 	}
 	
+	public List<String> getAllGenres(){
+		return ((List<String>) setOfGenres);
+	}
 	
 	public Graph getGraphForMoviesWithCast() {
 		return movieCastGraph;
