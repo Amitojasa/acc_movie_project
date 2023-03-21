@@ -28,21 +28,29 @@ public class CreateGraph {
 	 Set<String> uniqueCast = new HashSet<String>();
 	 List<String> collectionMovieAndCast=new ArrayList<String>();
 	 List<List<String>> collectionCastRespectToMovie=new ArrayList();
-	 SymbolGraph sg;
-	 Graph g;
+	 
+	 List<List<String>> collectionMovieRespectToGenre = new ArrayList();
+	 
+	 SymbolGraph sg, sgForMovieGenre;
+	 Graph g, movieGenreGraph;
 	public  void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
 		
 		JSONParser parser=new JSONParser();
 		  JSONArray a = (JSONArray) parser.parse(new FileReader("moviesNew.json"));
-		 
+		 System.out.println(a.get(0));
 		  for (Object o : a)
 		  {
 		    JSONObject movie = (JSONObject) o;
+		    
 		    List<String> temp=new ArrayList<String>();
+		    List<String> tempListToHandleMovieGenre = new ArrayList<String>();
+		    
 		    String name = (String) movie.get("movieName");
+		    
 		    movieNames.add(name);
 		    collectionMovieAndCast.add(name);
 		    temp.add(name);
+		    tempListToHandleMovieGenre.add(name);
 		    
 		  
 		    JSONArray casts = (JSONArray) movie.get("cast");
@@ -52,20 +60,27 @@ public class CreateGraph {
 		    	temp.add((String)cast);
 		    }
 		    
+		    JSONArray genres = (JSONArray) movie.get("genres");
+		    for (Object genre: genres) {
+		    	tempListToHandleMovieGenre.add((String)genre);
+		    }
+		    
 		    collectionCastRespectToMovie.add(temp);
-		    	
-		   
-		    
-		    
-
+		    collectionMovieRespectToGenre.add(tempListToHandleMovieGenre);
 		    
 		  }
-		  
+	 	  
 		  sg= new SymbolGraph(collectionCastRespectToMovie);
+		  
+		  sgForMovieGenre = new SymbolGraph(collectionMovieRespectToGenre);
 		    
 		    g=sg.G();
 		    
+		    movieGenreGraph = sgForMovieGenre.G();
+		    
 		    String s=g.toString();
+		    
+		    
 		    
 		    System.out.println("");
 	        if(sg.contains("Nick Preston")) {
@@ -88,14 +103,25 @@ public class CreateGraph {
 	}
 	
 	
-	public Graph getGraph() {
+	public Graph getGraphForMoviesWithCast() {
 		return g;
 	}
 	
-	public SymbolGraph getSymbolGraph() {
+	public SymbolGraph getSymbolGraphForMoviesWithCast() {
 		return sg;
 	}
 	
+	public Graph getGraphForMoviesWithGenre() {
+		return movieGenreGraph;
+	}
+	
+	public SymbolGraph getSymbolGraphForMoviesWithGenre() {
+		return sgForMovieGenre;
+	}
+	
+	public List<List<String>> getMoviesWithGenre(){
+		return collectionMovieRespectToGenre;
+	}
 	
 	
 }
