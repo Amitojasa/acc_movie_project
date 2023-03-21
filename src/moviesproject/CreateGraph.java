@@ -28,21 +28,31 @@ public class CreateGraph {
 	 Set<String> uniqueCast = new HashSet<String>();
 	 List<String> collectionMovieAndCast=new ArrayList<String>();
 	 List<List<String>> collectionCastRespectToMovie=new ArrayList();
-	 SymbolGraph sg;
-	 Graph g;
-	public  void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
+	 
+	 List<List<String>> collectionMovieRespectToGenre = new ArrayList();
+	 
+	 SymbolGraph sgForMovieCast, sgForMovieGenre;
+	 Graph movieCastGraph, movieGenreGraph;
+	 
+	 public  void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
 		
-		JSONParser parser=new JSONParser();
-		  JSONArray a = (JSONArray) parser.parse(new FileReader("moviesNew.json"));
+		
+		JSONParser parserForJson = new JSONParser();
+		JSONArray arrayOfMoviesWithDetails = (JSONArray) parserForJson.parse(new FileReader("moviesNew.json"));
 		 
-		  for (Object o : a)
-		  {
-		    JSONObject movie = (JSONObject) o;
+		for (Object movieObject : arrayOfMoviesWithDetails){
+			  
+		    JSONObject movie = (JSONObject) movieObject;
+		    
 		    List<String> temp=new ArrayList<String>();
+		    List<String> tempListToHandleMovieGenre = new ArrayList<String>();
+		    
 		    String name = (String) movie.get("movieName");
+		    
 		    movieNames.add(name);
 		    collectionMovieAndCast.add(name);
 		    temp.add(name);
+		    tempListToHandleMovieGenre.add(name);
 		    
 		  
 		    JSONArray casts = (JSONArray) movie.get("cast");
@@ -52,31 +62,35 @@ public class CreateGraph {
 		    	temp.add((String)cast);
 		    }
 		    
+		    JSONArray genres = (JSONArray) movie.get("genres");
+		    for (Object genre: genres) {
+		    	tempListToHandleMovieGenre.add((String)genre);
+		    }
+		    
 		    collectionCastRespectToMovie.add(temp);
-		    	
-		   
-		    
-		    
-
+		    collectionMovieRespectToGenre.add(tempListToHandleMovieGenre);
 		    
 		  }
+		 	  
+		sgForMovieCast= new SymbolGraph(collectionCastRespectToMovie);
 		  
-		  sg= new SymbolGraph(collectionCastRespectToMovie);
+		  sgForMovieGenre = new SymbolGraph(collectionMovieRespectToGenre);
 		    
-		    g=sg.G();
-		    
-		    String s=g.toString();
-		    
-		    System.out.println("");
-	        if(sg.contains("Nick Preston")) {
-	        	Iterable<Integer> t=g.adj(sg.index("Nick Preston"));
-	        	for(Integer i : t) {
-	        		System.out.println(sg.name(i));        		
-	        	}
-	        }
+		  movieCastGraph = sgForMovieCast.G();
+		  movieGenreGraph = sgForMovieGenre.G();
+	    
+		  String s = movieCastGraph.toString();
+	    
+		  System.out.println("");
+		  if(sgForMovieCast.contains("Nick Preston")) {
+			  Iterable<Integer> t = movieCastGraph.adj(sgForMovieCast.index("Nick Preston"));
+			  for(Integer i : t) {
+				  System.out.println(sgForMovieCast.name(i));        		
+			  }
+		  }
 		    
 		
-	}
+		}
 	
 	
 	public List<String> getAllMovieNames(){
@@ -88,14 +102,25 @@ public class CreateGraph {
 	}
 	
 	
-	public Graph getGraph() {
-		return g;
+	public Graph getGraphForMoviesWithCast() {
+		return movieCastGraph;
 	}
 	
-	public SymbolGraph getSymbolGraph() {
-		return sg;
+	public SymbolGraph getSymbolGraphForMoviesWithCast() {
+		return sgForMovieCast;
 	}
 	
+	public Graph getGraphForMoviesWithGenre() {
+		return movieGenreGraph;
+	}
+	
+	public SymbolGraph getSymbolGraphForMoviesWithGenre() {
+		return sgForMovieGenre;
+	}
+	
+	public List<List<String>> getMoviesWithGenre(){
+		return collectionMovieRespectToGenre;
+	}
 	
 	
 }
