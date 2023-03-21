@@ -37,7 +37,7 @@ public class CreateGraph {
 		
 		JSONParser parser=new JSONParser();
 		  JSONArray a = (JSONArray) parser.parse(new FileReader("moviesNew.json"));
-		 System.out.println(a.get(0));
+		 
 		  for (Object o : a)
 		  {
 		    JSONObject movie = (JSONObject) o;
