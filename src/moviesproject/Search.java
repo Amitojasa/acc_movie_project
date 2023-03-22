@@ -1,6 +1,8 @@
 package moviesproject;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Search {
 	
@@ -19,7 +21,7 @@ public class Search {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter the name of actor: ");
-		String nameOfActor = sc.nextLine();
+		String nameOfActor = ((String) sc.nextLine()).toLowerCase() ;
 		
 		System.out.println();
 		
@@ -33,14 +35,9 @@ public class Search {
 			  	}
 			
 			System.out.println();
-			System.out.println("Do you want to fetch the details of a particular movie?");
-			System.out.println("1: Yes");
-			System.out.println("2: No");
-			System.out.print("Enter your choice: ");
-			int fetchDetails = sc.nextInt();
-			if (fetchDetails == 1) {				
-				fetchMovie(customGraph);
-			}
+			
+			fetchMovie(customGraph);
+			
 		}
 		else {
 			// TODO: Edit Distance call goes here.
@@ -50,16 +47,51 @@ public class Search {
 	
 	public static void fetchMovie(CreateGraph customGraph) {
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter the movie code as listed along side movie name: ");
-		int movieCode = sc.nextInt();
+		
+		System.out.println("Do you want to fetch the details of a particular movie?");
+		System.out.println("1: Yes");
+		System.out.println("2: No");
+		System.out.print("Enter your choice: ");
+		int fetchDetails = sc.nextInt();
+		if (fetchDetails == 1) {				
+			System.out.print("Enter the movie code as listed along side movie name: ");
+			int movieCode = sc.nextInt();
+			System.out.println();
+			System.out.println("=====+=====+===== Details of Movie =====+=====+=====");
+			customGraph.printMovieDetails(movieCode);
+		}
+		
+		
+		
+	}
+	
+	
+	public static void searchMovieByMovieName(CreateGraph customGraph) {
 		System.out.println();
-		System.out.println("=====+=====+===== Details of Movie =====+=====+=====");
-		customGraph.printMovieDetails(movieCode);
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter the name of Movie or a keyword: ");
+		String word = sc.nextLine();
+		System.out.println();
+		
+		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase());
+		if (setOfMovies != null) {
+			for (int i : setOfMovies) {
+				String movieName = customGraph.getMovieFromIndex(i);
+				System.out.print(customGraph.getCodeOfMovie(movieName) + ": ");
+				System.out.println(movieName);  
+			}
+			System.out.println();
+			fetchMovie(customGraph);		
+		}
+		else {
+			//TODO: Edit Distance goes here.
+			System.out.println("No Movies Found");
+		}
+		
+		
+		
 	}
 		
-		
-	
-
 	public static void main(CreateGraph customGraph) {
 				
 		showMoviesMenu();
@@ -73,7 +105,7 @@ public class Search {
 			searchMovieByActorName(customGraph);
 			break;
 		case 2:
-			System.out.println("1");
+			searchMovieByMovieName(customGraph);
 			break;
 		case 3:
 			System.out.println("1");

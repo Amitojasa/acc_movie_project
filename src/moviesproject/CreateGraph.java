@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -43,27 +44,23 @@ public class CreateGraph {
 	 
 	 
 	 public void putMovieInTrie(String nameOfMovie, int currentIndex) {
-		 Set<Integer> indexesOfMovies= new HashSet<Integer>();
-		 if(nameOfMovie.indexOf(' ') != -1) {
-			 String[] wordsInMovies = nameOfMovie.split(" ");
-			 for (String word : wordsInMovies) {
-				 if (!ternarySearchTrie.contains(word)) {
-					 indexesOfMovies.add(currentIndex);
-					 ternarySearchTrie.put(word, indexesOfMovies);
-				 }
-				 else {
-					 for (int index : ternarySearchTrie.get(word)) {
-						 indexesOfMovies.add(index);
-					 }
-					 indexesOfMovies.add(currentIndex);
-					 ternarySearchTrie.put(word, indexesOfMovies);
-				 }
+		 String[] wordsInMovies = nameOfMovie.toLowerCase().split(" ");
+		 
+		 for (String word : wordsInMovies) {
+			 Set<Integer> indexesOfMovies= new HashSet<Integer>();
+			 
+			 if (!ternarySearchTrie.contains(word)) {
+				 indexesOfMovies.add(currentIndex);
+				 ternarySearchTrie.put(word, indexesOfMovies);
 			 }
-		 } 
-		 else {
-			 indexesOfMovies.add(currentIndex);
-			 ternarySearchTrie.put(nameOfMovie, indexesOfMovies);;
-		 }
+			 else {
+				 for (int index : ternarySearchTrie.get(word)) {
+					 indexesOfMovies.add(index);
+				 }
+				 indexesOfMovies.add(currentIndex);
+				 ternarySearchTrie.put(word, indexesOfMovies);
+			 }
+		 }		  
 	 }
 	 
 	 public void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
@@ -98,7 +95,7 @@ public class CreateGraph {
 		    for (Object cast : casts) {
 		    	uniqueCast.add((String)cast);
 		    	collectionMovieAndCast.add((String)cast);
-		    	temp.add((String)cast);
+		    	temp.add(((String)cast).toLowerCase());
 		    }
 		    
 		    JSONArray genres = (JSONArray) movie.get("genres");
@@ -135,6 +132,15 @@ public class CreateGraph {
 		return movieNames;
 	}
 	
+	public String getMovieFromIndex(int indexOfMovie) {
+		JSONObject movieObject = (JSONObject) arrayOfMoviesWithDetails.get(indexOfMovie);		
+		return (String) movieObject.get("movieName");
+	}
+	
+	public void printMovieNameFromIndex(int indexOfMovie) {
+		System.out.println();
+	}
+	
 	public Set<String> getUniqueCast(){
 		return uniqueCast;
 	}
@@ -165,6 +171,19 @@ public class CreateGraph {
 	
 	public int getCodeOfMovie(String nameOfMovie){
 		return movieIndex.get(nameOfMovie);
+	}
+	
+	public Set<Integer> getMovieByKeyWord(String key) {
+		String[] arr = key.toLowerCase().split(" ");
+		if (arr.length == 1) {
+			return ternarySearchTrie.get(key);
+		}
+		else {
+			Set<Integer> newSet= new HashSet<Integer>();
+			System.out.println("Boyer Moore Goes here");
+//			TODO: Boyer Moore
+			return (newSet);
+		}
 	}
 	
 	public void printMovieDetails(int movieCode) {
