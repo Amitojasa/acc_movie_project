@@ -14,7 +14,16 @@ public class Main {
 		System.out.println("4: Exit");
 		System.out.print("\nPlease select one of the above options (Enter the digit associated): ");
 	}
-	
+	public static void topMovies() {
+		System.out.println();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter between 1 to 50:");
+		int numberOfMovies = sc.nextInt();
+		System.out.println("Do you want top" + numberOfMovies + "movies based on Actor?");
+		Search.searchMovieByActorName(customGraph);
+		System.out.println("Do you want top" + numberOfMovies + "movies based on Genre?");
+		Search.searchMovieByGenre();
+	}
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		FetchMovies fetchMoviesObj = new FetchMovies();
 		CreateGraph customGraph = new CreateGraph();
@@ -38,6 +47,7 @@ public class Main {
 				searchMovies.main(customGraph);
 				//search related function
 			}else if(option==3) {
+				topMovies.main(customGraph);
 				//get top movies
 			}else if(option ==4) {
 				System.out.println("Thankyou, have a nice day.");
