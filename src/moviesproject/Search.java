@@ -22,7 +22,7 @@ public class Search {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter the name of actor: ");
-		String nameOfActor = ((String) sc.nextLine()).toLowerCase() ;
+		String nameOfActor = ((String) sc.nextLine()).strip().toLowerCase() ;
 		
 		System.out.println();
 		
@@ -79,7 +79,7 @@ public class Search {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter the name of Movie or a keyword: ");
-		String word = sc.nextLine();
+		String word = sc.nextLine().strip().toLowerCase();
 		System.out.println();
 		
 		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase());

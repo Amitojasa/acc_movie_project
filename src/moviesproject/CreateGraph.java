@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -180,9 +181,25 @@ public class CreateGraph {
 		}
 		else {
 			Set<Integer> newSet= new HashSet<Integer>();
-			System.out.println("Boyer Moore Goes here");
-//			TODO: Boyer Moore
-			return (newSet);
+			
+			Set<Integer> movieSet = new HashSet<Integer>();
+			
+			for(String word : arr) {
+				if(!isStopWord(word)) {
+					if(ternarySearchTrie.get(word) != null) {						
+						movieSet.addAll(ternarySearchTrie.get(word));
+					}
+				}
+			}
+			for (int i : movieSet) {
+				if(getMovieFromIndex(i).strip().toLowerCase().equalsIgnoreCase(key)) {
+					movieSet.removeAll(movieSet);
+					movieSet.add(i);
+					return movieSet;
+				}
+			}
+			
+			return (movieSet);
 		}
 	}
 	
@@ -201,4 +218,9 @@ public class CreateGraph {
 		System.out.println("Genres	   : " +movieObject.get("genres"));
 		System.out.println("Cast	   : " +movieObject.get("cast"));
 	}
+	
+	public static boolean isStopWord(String word) {
+        String[] stopWords = {"a", "an", "the", "in", "on", "at", "for", "and", "or", "but", "with", "is", "are", "was", "were", "be", "been", "has", "have", "had", "this", "that", "these", "those", "there", "here", "where", "when", "who", "what", "why", "how", "which", "by", "from", "to", "of"};
+        return Arrays.asList(stopWords).contains(word.toLowerCase());
+    }
 }
