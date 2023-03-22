@@ -100,10 +100,7 @@ public class Search {
 	}
 		
 	public static void main(CreateGraph customGraph) {
-		
-//		SpellCheker spellcheck = new SpellCheker();
-//		spellcheck.main(customGraph, nameOfActor);
-		
+
 		showMoviesMenu();
 		
 		Scanner sc = new Scanner(System.in);
