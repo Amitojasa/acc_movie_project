@@ -199,6 +199,6 @@ public class CreateGraph {
 		System.out.println("Release    : " +movieObject.get("movieYear"));
 		System.out.println("Rating	   : " +movieObject.get("movieRating"));
 		System.out.println("Genres	   : " +movieObject.get("genres"));
-		System.out.println("Genres	   : " +movieObject.get("cast"));
+		System.out.println("Cast	   : " +movieObject.get("cast"));
 	}
 }
