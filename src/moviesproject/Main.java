@@ -20,6 +20,7 @@ public class Main {
 		CreateGraph customGraph = new CreateGraph();
 		Search searchMovies = new Search();
 		
+		
 		Scanner scannerObj = new Scanner(System.in);  
 		customGraph.createGraphFromJson();
 		System.out.println("Welcome to the Movie Search Engine\n");
