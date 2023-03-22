@@ -44,8 +44,8 @@ public class Search {
 			// TODO: Edit Distance call goes here.
 			SpellCheker spellcheck = new SpellCheker();
 			
-			int exist = spellcheck.main(customGraph, nameOfActor);
-//			int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
+//			int exist = spellcheck.main(customGraph, nameOfActor);
+			int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
 			
 			if(exist== 0) {
 				System.out.println("Could not find actor.");

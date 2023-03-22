@@ -1,5 +1,6 @@
 package moviesproject;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -17,10 +18,31 @@ public class SpellCheker {
 		System.out.println("Do you mean by....");
 		while(castIterator.hasNext()) {
 			String actor = castIterator.next();
-			 if(Sequences.editDistance(actor, nameOfActor) < 3) {
-	    		 System.out.println(actor);
-	    		 i++;
-	    	 }
+			
+			String[] splitedactor = actor.trim().split(" ");
+			
+			for(String word : splitedactor) {
+				
+				if (nameOfActor.length() <= 7) {
+					 if(Sequences.editDistance(word, nameOfActor) < 3) {
+			    		 System.out.println(actor);
+			    		 i++;
+			    	 }
+				}
+				else if(nameOfActor.length() > 7 && nameOfActor.length()<= 15) {
+					if(Sequences.editDistance(word, nameOfActor) < 6) {
+			    		 System.out.println(actor);
+			    		 i++;
+			    	 }
+				}
+				else {
+					if(Sequences.editDistance(word, nameOfActor) < 10) {
+			    		 System.out.println(actor);
+			    		 i++;
+			    	 }
+				}
+			}
+			
 		}
 		return i;
 	}
@@ -36,10 +58,31 @@ public class SpellCheker {
 		System.out.println("Do you mean by....");
 		while(movies.hasNext()) {
 			String moviename = movies.next();
-			 if(Sequences.editDistance(moviename, nameOfMovie) < 3) {
-	    		 System.out.println(moviename);
-	    		 i++;
-	    	 }
+			
+			String[] splitedmovienames = moviename.trim().split(" ");
+			
+			for(String word : splitedmovienames) {
+//				System.out.println(word);
+				if (nameOfMovie.length() <= 7) {
+					 if(Sequences.editDistance(word, nameOfMovie) < 3) {
+			    		 System.out.println(moviename);
+			    		 i++;
+			    	 }
+				}
+				else if(nameOfMovie.length() > 7 && nameOfMovie.length()<= 15) {
+					if(Sequences.editDistance(word, nameOfMovie) < 6) {
+			    		 System.out.println(moviename);
+			    		 i++;
+			    	 }
+				}
+				else {
+					if(Sequences.editDistance(word, nameOfMovie) < 10) {
+			    		 System.out.println(moviename);
+			    		 i++;
+			    	 }
+				}
+			}
+
 		}
 		return i;
 	}
