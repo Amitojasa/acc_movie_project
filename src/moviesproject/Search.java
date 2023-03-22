@@ -43,7 +43,14 @@ public class Search {
 		}
 		else {
 			// TODO: Edit Distance call goes here.
-			System.out.println("Could not find actor.");
+			SpellCheker spellcheck = new SpellCheker();
+			
+			int exist = spellcheck.main(customGraph, nameOfActor);
+//			int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
+			
+			if(exist== 0) {
+				System.out.println("Could not find actor.");
+			}
 		}
 	}
 	
@@ -60,7 +67,10 @@ public class Search {
 	
 
 	public static void main(CreateGraph customGraph) {
-				
+		
+//		SpellCheker spellcheck = new SpellCheker();
+//		spellcheck.main(customGraph, nameOfActor);
+		
 		showMoviesMenu();
 		
 		Scanner sc = new Scanner(System.in);
