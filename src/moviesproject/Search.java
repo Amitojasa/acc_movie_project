@@ -1,5 +1,6 @@
 package moviesproject;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -60,7 +61,8 @@ public class Search {
 		System.out.println("2: No");
 		System.out.print("Enter your choice: ");
 		int fetchDetails = sc.nextInt();
-		if (fetchDetails == 1) {				
+		if (fetchDetails == 1) {			
+			System.out.println();
 			System.out.print("Enter the movie code as listed along side movie name: ");
 			int movieCode = sc.nextInt();
 			System.out.println();
@@ -93,9 +95,42 @@ public class Search {
 		else {
 			//TODO: Edit Distance goes here.
 			System.out.println("No Movies Found");
+		}	
+	}
+	
+	public static void searchMovieByGenre(CreateGraph customGraph) {
+		System.out.println();
+		System.out.println("============== List of Genre ==============");
+		Set<String> setOfGenres = customGraph.getAllGenres();
+		
+		Hashtable<Integer, String> genreIndex = new Hashtable<Integer, String>();
+		int currentItr = 1;
+		for (String i : setOfGenres) {
+			System.out.println(currentItr + " : " + i);
+			genreIndex.put(currentItr, i);
+			currentItr += 1;
+			
+			
+			
 		}
+		System.out.println();
 		
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Please choose a genre: ");
+		String chosenGenre = genreIndex.get(sc.nextInt());
 		
+		System.out.println();
+		
+		Iterable<Integer> listOfMovies = customGraph.getGraphForMoviesWithGenre().adj(customGraph.getSymbolGraphForMoviesWithGenre().index(chosenGenre));
+		for(Integer i : listOfMovies) {
+			System.out.print(customGraph.getCodeOfMovie(customGraph.getSymbolGraphForMoviesWithGenre().name(i))+ ": ");
+			System.out.println(customGraph.getSymbolGraphForMoviesWithGenre().name(i));     
+		  	}
+		
+		System.out.println();
+		
+		fetchMovie(customGraph);
+
 		
 	}
 		
@@ -115,7 +150,7 @@ public class Search {
 			searchMovieByMovieName(customGraph);
 			break;
 		case 3:
-			System.out.println("1");
+			searchMovieByGenre(customGraph);
 			break;
 		default:
 			System.out.println();
