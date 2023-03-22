@@ -109,9 +109,6 @@ public class Search {
 			System.out.println(currentItr + " : " + i);
 			genreIndex.put(currentItr, i);
 			currentItr += 1;
-			
-			
-			
 		}
 		System.out.println();
 		
