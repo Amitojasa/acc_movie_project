@@ -25,7 +25,7 @@ public class SymbolGraph {
 	        }
         }
         
-        System.out.println("Done reading ");
+//        System.out.println("Done reading ");
 
         // inverted index to get string keys in an array
         keys = new String[st.size()];
