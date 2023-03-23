@@ -35,26 +35,26 @@ public class topMovies {
 		return choices;
 	}
 	
-	public static void basedOnRating(int numberOfMovies, Movie[] arr) {
+	public static Hashtable<Movie, Double> createHashTableOfMOvies(int numberOfMovies, Movie[] arr) {
 		
-		Double[] movieRatings = new Double[arr.length];
-		
-		Hashtable<Movie, Double> movieIndex = new Hashtable<Movie, Double>();
+		Hashtable<Movie, Double> movieHash = new Hashtable<Movie, Double>();
 			
-		for (int i = 0; i < movieRatings.length; i++) {
-			movieRatings[i] = arr[i].getRating();
-			movieIndex.put(arr[i], arr[i].getRating());
+		for (int i = 0; i < arr.length; i++) {
+			movieHash.put(arr[i], arr[i].getRating());
 		}
-
-		List<Movie> aboveSevenMovies = new ArrayList<>();
+		return movieHash;
+	}
+	
+	public static void sortingBasedOnRatings(Hashtable<Movie, Double> movieIndex, int numberOfMovies) {
+		List<Movie> sortedBasedOnRatings = new ArrayList<>();
 		
 		for (Map.Entry<Movie, Double> entry : movieIndex.entrySet()) {
 		    if (entry.getValue() > 7.0) {
-		        aboveSevenMovies.add(entry.getKey());
+		        sortedBasedOnRatings.add(entry.getKey());
 		    }
 		}
 		
-		Collections.sort(aboveSevenMovies, new Comparator<Movie>() {
+		Collections.sort(sortedBasedOnRatings, new Comparator<Movie>() {
 			@Override
 			public int compare(Movie movie1, Movie movie2) {
 				return Double.compare(movieIndex.get(movie2), movieIndex.get(movie1));
@@ -64,11 +64,10 @@ public class topMovies {
 		System.out.println();
 		for (int displayMovies = 0; displayMovies < numberOfMovies; displayMovies++) {
 			
-			Movie movie = aboveSevenMovies.get(displayMovies);
+			Movie movie = sortedBasedOnRatings.get(displayMovies);
 			System.out.println(movie.getMovieName() + " : " +movie.getRating());
 			
 		}
-		
 	}
 	
 	
@@ -81,9 +80,11 @@ public class topMovies {
 		
 		Movie[] arr = customGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
 		
+		Hashtable<Movie, Double> sortedMovies = createHashTableOfMOvies(numberOfMovies, arr);
+		
 		switch(getMovieBasedOn) {
 		case 3:
-			basedOnRating(numberOfMovies, arr);
+			sortingBasedOnRatings(sortedMovies, numberOfMovies);
 			break;
 		default:
 			break;
