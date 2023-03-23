@@ -14,7 +14,7 @@ public class Main {
 		System.out.println("4: Exit");
 		System.out.print("\nPlease select one of the above options (Enter the digit associated): ");
 	}
-	
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		FetchMovies fetchMoviesObj = new FetchMovies();
 		CreateGraph customGraph = new CreateGraph();
@@ -38,6 +38,7 @@ public class Main {
 				searchMovies.main(customGraph);
 				//search related function
 			}else if(option==3) {
+				topMovies.main(customGraph);
 				//get top movies
 			}else if(option ==4) {
 				System.out.println("Thankyou, have a nice day.");
