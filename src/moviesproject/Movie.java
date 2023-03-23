@@ -15,11 +15,31 @@ public class Movie {
     // Add other movie attributes here
     
     public Movie(String title, String rating, String desc, String length, String year, JSONArray genres, JSONArray cast) {
-        this.movieName = title;
-        this.movieRating = rating;
-        this.movieDesc = movieDesc;
-        this.movieLength = length;
-        this.movieyear = year;
+    	if (title.isBlank()) {
+    		this.movieName = "No name found";
+    	} else {
+    		this.movieName = title;    		
+    	}
+    	
+    	if (desc.isBlank()) {
+    		this.movieDesc = "No description found";
+    	} else {
+    		this.movieDesc = desc;    		
+    	}
+    	
+    	if (length.isBlank()) {
+    		this.movieLength = "Could not find duration";
+    	} else {
+    		this.movieLength = length;    		
+    	}
+    	
+    	if (year.isBlank()) {
+    		this.movieyear = "Could not find year";
+    	} else {
+    		this.movieyear = year;    		
+    	}
+    	
+    	this.movieRating = rating;
         this.genres = genres;
         this.cast = cast;
         // Initialize other movie attributes here
