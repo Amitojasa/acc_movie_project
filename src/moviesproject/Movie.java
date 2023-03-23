@@ -24,7 +24,11 @@ public class Movie {
         return movieName;
     }
     
-    public String getRating() {
-        return movieRating;
+    public double getRating() {
+    	try {
+    		return Double.parseDouble(movieRating.strip());			
+		} catch (NumberFormatException e) {
+			return (double) 0;
+		}
     }
 }
