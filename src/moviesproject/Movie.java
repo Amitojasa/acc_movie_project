@@ -72,7 +72,7 @@ public class Movie {
     public double getRating() {
     	try {
     		return Double.parseDouble(movieRating.strip());			
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			return (double) 0;
 		}
     }

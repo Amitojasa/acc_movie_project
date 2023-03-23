@@ -239,6 +239,11 @@ public class CreateGraph {
         }
         return movieArray;
 	}
+	
+	public static boolean isStopWord(String word) {
+        String[] stopWords = {"a", "an", "the", "in", "on", "at", "for", "and", "or", "but", "with", "is", "are", "was", "were", "be", "been", "has", "have", "had", "this", "that", "these", "those", "there", "here", "where", "when", "who", "what", "why", "how", "which", "by", "from", "to", "of"};
+        return Arrays.asList(stopWords).contains(word.toLowerCase());
+    }
     
 
 }

@@ -195,7 +195,11 @@ public class topMovies {
 		Collections.sort(sortedMovies, new Comparator<Movie>() {
 			@Override
 			public int compare(Movie movie1, Movie movie2) {
-				return Double.compare(movieHash.get(movie2), movieHash.get(movie1));
+				try {					
+					return Double.compare(movieHash.get(movie2), movieHash.get(movie1));
+				} catch (Exception e) {
+					return 0;
+				}
 			}
 		});
 		
