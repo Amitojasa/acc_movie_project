@@ -214,7 +214,7 @@ public class CreateGraph {
        
 		    JSONObject currentMovie = (JSONObject) i;
        
-            Movie movie = new Movie((String)currentMovie.get("movieName"), (String)currentMovie.get("movieRating"), (String)currentMovie.get("movieDesc"), (String)currentMovie.get("movieLength"), (String)currentMovie.get("movieYear"));
+            Movie movie = new Movie((String)currentMovie.get("movieName"), (String)currentMovie.get("movieRating"), (String)currentMovie.get("movieDesc"), (String)currentMovie.get("movieLength"), (String)currentMovie.get("movieYear"), (JSONArray) currentMovie.get("genres"), (JSONArray) currentMovie.get("cast"));
             // Add other movie attributes to movie object here
             movieArray[j] = movie;
             j += 1;
