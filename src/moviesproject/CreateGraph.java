@@ -42,6 +42,9 @@ public class CreateGraph {
 	 Graph movieCastGraph, movieGenreGraph;
 	 TST<Set<Integer>> ternarySearchTrie = new TST<Set<Integer>>();
 	 
+	 Movie[] arrayForSorting;
+	 
+	 
 	 
 	 public void putMovieInTrie(String nameOfMovie, int currentIndex) {
 		 String[] wordsInMovies = nameOfMovie.toLowerCase().split(" ");
@@ -68,6 +71,7 @@ public class CreateGraph {
 		
 		JSONParser parserForJson = new JSONParser();
 		arrayOfMoviesWithDetails = (JSONArray) parserForJson.parse(new FileReader("moviesNew.json"));
+		Movie[] arrayforSorting = createArrayForMovies(arrayOfMoviesWithDetails);
 		
 		int currentIndexOfMovie = 0;
 		 
@@ -201,4 +205,21 @@ public class CreateGraph {
 		System.out.println("Genres	   : " +movieObject.get("genres"));
 		System.out.println("Cast	   : " +movieObject.get("cast"));
 	}
+	
+
+	public static Movie[] createArrayForMovies(JSONArray jsonArray) {
+		Movie[] movieArray = new Movie[jsonArray.size()];
+        int j = 0;
+        for (Object i : jsonArray) {
+       
+		    JSONObject currentMovie = (JSONObject) i;
+       
+            Movie movie = new Movie((String)currentMovie.get("movieName"), (String)currentMovie.get("movieRating"), (String)currentMovie.get("movieDesc"), (String)currentMovie.get("movieLength"), (String)currentMovie.get("movieYear"), (JSONArray) currentMovie.get("genres"), (JSONArray) currentMovie.get("cast"));
+            // Add other movie attributes to movie object here
+            movieArray[j] = movie;
+            j += 1;
+        }
+        return movieArray;
+	}
+    
 }
