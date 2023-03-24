@@ -42,12 +42,12 @@ public class Search {
 		}
 		else {
 			// TODO: Edit Distance call goes here.
-			SpellCheker spellcheck = new SpellCheker();
+			SpellChecker spellcheck = new SpellChecker();
 			
-			int exist = spellcheck.main(customGraph, nameOfActor);
+			int exist = spellcheck.byActor(customGraph, nameOfActor);
 //			int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
 			
-			if(exist== 0) {
+			if( exist== 0) {
 				System.out.println("Could not find actor.");
 			}
 		}
@@ -83,7 +83,7 @@ public class Search {
 		System.out.println();
 		
 		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase());
-		if (setOfMovies != null) {
+		if (setOfMovies != null && setOfMovies.size() > 0) {		
 			for (int i : setOfMovies) {
 				String movieName = customGraph.getMovieFromIndex(i);
 				System.out.print(customGraph.getCodeOfMovie(movieName) + ": ");
@@ -91,10 +91,16 @@ public class Search {
 			}
 			System.out.println();
 			fetchMovie(customGraph);		
+				
 		}
 		else {
 			//TODO: Edit Distance goes here.
-			System.out.println("No Movies Found");
+			SpellChecker spellcheck = new SpellChecker();
+			int exist = spellcheck.bymoviename(customGraph, word);
+			
+			if(exist == 0) {
+				System.out.println("No movies found.");
+			}
 		}	
 	}
 	
