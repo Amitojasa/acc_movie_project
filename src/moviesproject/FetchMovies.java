@@ -15,19 +15,39 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 class FetchMovies {
+	@SuppressWarnings("unchecked")
 	public void sync() {
+
 		
+		
+		//// change the stop to 1 to run this file
 		int stop=1;
+		
+		
+		///Please Read:
+		/// this will take nearly 15-30 minutes to fetch all the movies because it is visiting nearly 2400 web pages.
+		/// to run this for limited no. of pages which will result in less no. of movies change the NumberOfPages to 5.
+		/// less number of movies can result in less number of results for auto suggestion and spell checker
+		// for complete processing put NumberOfPages to 10000
+		int NumberOfPages=10000;
+		
+		
+		
+		if(stop==0) {
+			System.out.println("You need to change the stop value to 1 to run this file. (This is for safety purpose.)");
+			return;
+		}
+		
 		int pageNumber=1;
 		JSONArray jsonArray = new JSONArray();
-		System.out.println("Commented the file writing part, please uncomment it to update the file");
+		
 		System.out.println("Fetching the movies......");
-		System.out.println("Please have patience this will take some time ......");
+		System.out.println("Please have patience this will take some time, Don't stop in between  ......");
 		
 		while(stop==1) {
 			
 			
-//			System.out.println(pageNumber);
+			System.out.println(pageNumber);
 			
 			//country code 129 for USA, 147 is for Canada
 			// URL which is being scrapped for movies data
@@ -49,7 +69,7 @@ class FetchMovies {
 				
 				
 				// it number of movieItems is 0 then we stop the loop
-				if(movieItems.size()==0 ) {
+				if(movieItems.size()==0 || pageNumber>NumberOfPages ) {
 					stop=0;
 					continue;
 				}
@@ -60,10 +80,10 @@ class FetchMovies {
 				// for each movie item in movie items
 				for(Element movieItem:movieItems) {
 					
-					//create a json object
+					//create a JSON object
 					JSONObject obj=new JSONObject();
 					
-					// selecting the div containing movie info
+					// selecting the DIV containing movie info
 					Elements movieInfo = movieItem.select(".movie-info");
 					
 					//these select classes depends on website getting different movie attributes.
@@ -110,7 +130,6 @@ class FetchMovies {
 					}
 					
 					// convert array to json array and insert in json object
-//					String genresJsonText = JSONValue.toJSONString(genres); 
 					obj.put("genres",genres);
 					
 					
@@ -121,7 +140,7 @@ class FetchMovies {
 						cast.add(m.text());
 					}
 			
-//					String castJsonText = JSONValue.toJSONString(cast); 
+ 
 					obj.put("cast",cast);
 					
 					
@@ -132,8 +151,8 @@ class FetchMovies {
 					for(Element m:productions) {
 						production.add(m.text());
 					}
+				
 					
-//					String productionJsonText = JSONValue.toJSONString(production); 
 					obj.put("production",production);
 					
 			
@@ -145,7 +164,7 @@ class FetchMovies {
 						country.add(m.text());
 					}
 					
-//					String countriesJsonText = JSONValue.toJSONString(country); 
+					
 					obj.put("country",country);
 					
 				
@@ -165,18 +184,18 @@ class FetchMovies {
 		}
 		
 //		 writing json array to file
-//		try (FileWriter file = new FileWriter("moviesNew.json")) {
-//			
-//            // write json array to file by converting it to string
-//            file.write(jsonArray.toJSONString()); 
-//            
-//            //clearing any buffered data
-//            file.flush();
-// 
-//        } catch (IOException e) {
-//        	//handle file exception
-//            e.printStackTrace();
-//        }
+		try (FileWriter file = new FileWriter("moviesNew.json")) {
+			
+            // write json array to file by converting it to string
+            file.write(jsonArray.toJSONString()); 
+            
+            //clearing any buffered data
+            file.flush();
+ 
+        } catch (IOException e) {
+        	//handle file exception
+            e.printStackTrace();
+        }
 	
 		System.out.println("Hurayyyy !!!! Done.");
 	}
