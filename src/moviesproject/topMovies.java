@@ -121,9 +121,9 @@ public class topMovies {
 		}
 		else {
 			// TODO: Edit Distance call goes here.
-						SpellCheker spellcheck = new SpellCheker();
+						SpellChecker spellcheck = new SpellChecker();
 						
-			int exist = spellcheck.main(customGraph, nameOfActor);
+			int exist = spellcheck.byActor(customGraph, nameOfActor);
 //						int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
 			
 			if(exist== 0) {
