@@ -22,6 +22,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import common.BoyerMoore;
+import common.KMP;
 import graphs.Graph;
 import graphs.SymbolGraph;
 import graphs.TST;
@@ -178,7 +180,7 @@ public class CreateGraph {
 		return movieIndex.get(nameOfMovie);
 	}
 	
-	public Set<Integer> getMovieByKeyWord(String key) {
+	public Set<Integer> getMovieByKeyWord(String key, CreateGraph customGraph) {
 		
 		
 		// input-> check kiya in unique movies ka hashtable(use get unique movies function) if yes return the movie
@@ -191,35 +193,56 @@ public class CreateGraph {
 					//boyremoore, inthis substring movies names array 
 	
 				//else no movie found
-					
 		
-		
+		Set<Integer> setOfMovies = new HashSet<Integer>();
+		List<String> listOfFaultyMovies = new ArrayList<String>();
 		
 		String[] arr = key.toLowerCase().split(" ");
 		if (arr.length == 1) {
-			return ternarySearchTrie.get(key);
+			if(ternarySearchTrie.get(key) != null) {				
+				return ternarySearchTrie.get(key);
+			}
+			else {
+				for (String movieInDB : this.getAllMovieNames()) {		
+						if(!movieInDB.contains("\u2019")) {
+							BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+							int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
+							if (offset1 != movieInDB.length()) {
+								System.out.println("Did you mean...");
+								System.out.println(movieInDB);
+								listOfFaultyMovies.add(movieInDB);
+							}
+						}
+				}
+			}
 		}
 		else {
-			Set<Integer> newSet= new HashSet<Integer>();
-			
-			Set<Integer> movieSet = new HashSet<Integer>();
-			
-			for(String word : arr) {
-				if(!isStopWord(word)) {
-					if(ternarySearchTrie.get(word) != null) {						
-						movieSet.addAll(ternarySearchTrie.get(word));
+			if(!this.getAllMovieNames().contains(key)) {
+				// TODO: Boyer Moore goes here
+				for (String movieInDB : this.getAllMovieNames()) {						
+					if(!movieInDB.contains("\u2019")) {
+						
+						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+						
+						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
+						int count = 0;
+						if (offset1 < movieInDB.length()) {
+							listOfFaultyMovies.add(movieInDB);
+						}
 					}
 				}
 			}
-			for (int i : movieSet) {
-				if(getMovieFromIndex(i).strip().toLowerCase().equalsIgnoreCase(key)) {
-					movieSet.removeAll(movieSet);
-					movieSet.add(i);
-					return movieSet;
-				}
+			if (listOfFaultyMovies.size() == 0) {
+				SpellChecker spellChecker = new SpellChecker();
+				SpellChecker.bymoviename(customGraph, key);
 			}
-			return (movieSet);
+			else if(listOfFaultyMovies.size() == 1) {
+				System.out.print("Did you mean ... ");
+				setOfMovies.add(movieIndex.get(listOfFaultyMovies.get(0)));
+			}
+			
 		}
+		return setOfMovies;
 	}
 	
 	public void printMovieDetails(int movieCode) {

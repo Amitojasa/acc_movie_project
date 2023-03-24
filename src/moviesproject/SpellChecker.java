@@ -72,12 +72,12 @@ public class SpellChecker {
 		    		 i++;
 		    	 }
 			}else {
-				for(String word : splitedmovienames) {
-						 if(Sequences.editDistance(word.toLowerCase(), nameOfMovie) < 3) {
-							 result.add(moviename);
-				    		 i++;
-				    	 }
-				}
+//				for(String word : splitedmovienames) {
+//						 if(Sequences.editDistance(word.toLowerCase(), nameOfMovie) < 3) {
+//							 result.add(moviename);
+//				    		 i++;
+//				    	 }
+//				}
 			}
 		}
 		

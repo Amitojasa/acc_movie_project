@@ -26,10 +26,8 @@ public class Main {
 		
 		
 		while(true) {
-			
-
 			showMenu();
-
+			try {				
 				int option = scannerObj.nextInt(); 
 				
 				if(option==1) {
@@ -46,7 +44,13 @@ public class Main {
 				}else {
 					System.out.println("Wrong option, Please select again.");
 				}
-
+			} 
+			catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("\nPlease provide valid inputs.....");
+				System.out.println(e);
+				scannerObj.nextLine();
+			}
 		}
 		
 	}
