@@ -19,135 +19,16 @@ public class topMovies {
 	public static Hashtable<Movie, Double> movieHash = new Hashtable<Movie, Double>();
 	public static List<Movie> sortedMovies = new ArrayList<>();
 	
-	public static int[] showMenu() {
+	public static int showMenu() {
 		
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
 		System.out.println("\nEnter number of movies that you want to get between 1 to 50:");
-		int numberOfMovies = sc.nextInt();
-		System.out.println("1: Get top " +numberOfMovies+ " based on Actor?");
-		System.out.println("2: Get top " +numberOfMovies+ " based on overall Rating?");
-		
-		System.out.println("\nEnter your choice: ");
-		int choice = sc.nextInt();
-		
-		int choices[] = new int[2];
-		choices[0] = numberOfMovies;
-		choices[1] = choice;
-		
-		return choices;
-	}
+		int numberOfMovies = sc.nextInt();	
+		return numberOfMovies;
+	}	
 	
-	
-	
-	
-	// new function created for printing you can remove this but take reference before removing for the parameters
-	public static void getSortedMovies(int x,Movie[] arr){
-		for(int i=0;i<x;i++) {
-			System.out.println(arr[i].getMovieName()+" "+arr[i].getRating()+" "+arr[i].getMovieGenres().size()+" "+arr[i].getMovieCast().size());
-		}
-	}
-	
-	
-	public static Hashtable<Movie, Double> createHashTableOfMOvies(int numberOfMovies, Movie[] arr) {
-		
-		Hashtable<Movie, Double> movieHash = new Hashtable<Movie, Double>();
-			
-		for (int i = 0; i < arr.length; i++) {
-			movieHash.put(arr[i], arr[i].getRating());
-		}
-		return movieHash;
-	}
-	
-	public static void sortingBasedOnRatings(Hashtable<Movie, Double> movieIndex, int numberOfMovies) {
-		List<Movie> sortedBasedOnRatings = new ArrayList<>();
-		
-		for (Map.Entry<Movie, Double> entry : movieIndex.entrySet()) {
-		    if (entry.getValue() > 7.0) {
-		        sortedBasedOnRatings.add(entry.getKey());
-		    }
-		}
-		
-		Collections.sort(sortedBasedOnRatings, new Comparator<Movie>() {
-			@Override
-			public int compare(Movie movie1, Movie movie2) {
-				return Double.compare(movieIndex.get(movie2), movieIndex.get(movie1));
-			}
-		});
-		
-		System.out.println();
-		for (int displayMovies = 0; displayMovies < numberOfMovies; displayMovies++) {
-			
-			Movie movie = sortedBasedOnRatings.get(displayMovies);
-			System.out.println(displayMovies+1 + " : "+movie.getMovieName() + " : " +movie.getRating());
-		}
-		fetchMovies(sortedBasedOnRatings);
-	}
-	
-	public static void sortingBasedOnCast(List<Movie> sortedMovies, int numberOfMovies, CreateGraph customGraph, Movie[] arr) {
-		System.out.println();
-		System.out.println("Plese enter first and last name of the actor: ");
-		
-		Scanner sc = new Scanner(System.in);
-		String nameOfActor = sc.nextLine().strip().toLowerCase();
-		
-		boolean actorIsPresent = customGraph.getSymbolGraphForMoviesWithCast().contains(nameOfActor);
-		
-		if(actorIsPresent) {
-		
-			List<Movie> sortedMoviesOfActor = new ArrayList<>();
-			Iterable<Integer> listOfMovies = customGraph.getGraphForMoviesWithCast().adj(customGraph.getSymbolGraphForMoviesWithCast().index(nameOfActor));
-			
-			for(Integer j : listOfMovies) {
-	
-				for(Movie i : arr) {
-					if (i.getMovieName().equals(customGraph.getSymbolGraphForMoviesWithCast().name(j))) {
-						sortedMoviesOfActor.add(i);
-					}
-				}
-			}
-			
-			
-			Collections.sort(sortedMoviesOfActor, new Comparator<Movie>(){
-				@Override
-				public int compare(Movie movie1, Movie movie2) {
-					return Double.compare(movieHash.get(movie2), movieHash.get(movie1));
-				}
-			});
-		
-
-			System.out.println();
-			
-			if (numberOfMovies > sortedMoviesOfActor.size()) {
-				numberOfMovies = sortedMoviesOfActor.size();
-			}
-			
-			for (int displayMovies = 0; displayMovies < numberOfMovies; displayMovies++) {
-				
-				Movie movie = sortedMoviesOfActor.get(displayMovies);
-				System.out.println(displayMovies+1 + " : "+movie.getMovieName() + " : " +movie.getRating());
-			}
-			
-			fetchMovies(sortedMoviesOfActor);
-			
-		}
-		else {
-			// TODO: Edit Distance call goes here.
-						SpellChecker spellcheck = new SpellChecker();
-						
-			int exist = spellcheck.byActor(customGraph, nameOfActor);
-//						int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
-			
-			if(exist== 0) {
-				System.out.println("Could not find actor.");
-			}
-		}
-	
-		
-	}
-	
-	
-	public static void fetchMovies(List<Movie> movies) {
+	public static void fetchMovies(Movie[] arr) {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("\nDo you want to fetch details of particular movie");
@@ -164,7 +45,7 @@ public class topMovies {
 				System.out.println();
 				System.out.println("********** Details of Movie **********");
 				
-				Movie movie = movies.get(movieCode);
+				Movie movie = arr[movieCode];
 				
 				System.out.println();
 				
@@ -187,25 +68,24 @@ public class topMovies {
 
 	}
 	
-	
+	public static void printSortedMovies(int x,Movie[] arr){
+		for(int i=0;i<x;i++) {
+			System.out.println((i+1)+ " : " +arr[i].getMovieName() + " : Rating: " +arr[i].getRating());
+		}
+		fetchMovies(arr);
+	}
+		
 	public static void main(CreateGraph customGraph) {
 		
-		int choices[] = showMenu();
-		int numberOfMovies = choices[0];
-		int getMovieBasedOn = choices[1];
+		int numberOfMovies = showMenu();
 		
 		Movie[] arr = customGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
-		
-		
-		
-		
 		
 		/// important sorting done in main
 		Arrays.sort(arr, new Comparator<Movie>() {
 			@Override
 			public int compare(Movie movie1, Movie movie2) {
 				try {					
-					
 					if(movie1.getRating()==movie2.getRating()) {
 						if(movie1.getMovieGenres().size()<movie2.getMovieGenres().size()) {
 							return 1;
@@ -218,8 +98,6 @@ public class topMovies {
 							}else {
 								return -1;
 							}
-							
-						
 						}else {
 							return -1;
 						}
@@ -235,50 +113,8 @@ public class topMovies {
 			}
 		});
 		
+		printSortedMovies(numberOfMovies,arr);
 		
-		
-		
-		movieHash = createHashTableOfMOvies(numberOfMovies, arr);
-		
-		for (Map.Entry<Movie, Double> entry : movieHash.entrySet()) {
-		    if (entry.getValue() > 5.0) {
-		        sortedMovies.add(entry.getKey());
-		    }
-		}
-		
-		Collections.sort(sortedMovies, new Comparator<Movie>() {
-			@Override
-			public int compare(Movie movie1, Movie movie2) {
-				try {					
-					return Double.compare(movieHash.get(movie2), movieHash.get(movie1));
-				} catch (Exception e) {
-					return 0;
-				}
-			}
-		});
-		
-		switch(getMovieBasedOn) {
-		
-		case 1:
-			
-			
-			//function edited
-			getSortedMovies(numberOfMovies,arr);
-			
-//			createArrayOfMovies()
-			
-//			sortingBasedOnCast(sortedMovies, numberOfMovies, customGraph, arr);
-			break;
-			
-		case 2:
-			sortingBasedOnRatings(movieHash, numberOfMovies);
-			break;
-		
-		default:
-			break;
-		}
-
-	
 	}
 
 }
