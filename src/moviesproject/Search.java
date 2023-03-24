@@ -82,7 +82,7 @@ public class Search {
 		String word = sc.nextLine().strip().toLowerCase();
 		System.out.println();
 		
-		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase());
+		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase(), customGraph);
 		if (setOfMovies != null && setOfMovies.size() > 0) {		
 			for (int i : setOfMovies) {
 				String movieName = customGraph.getMovieFromIndex(i);
