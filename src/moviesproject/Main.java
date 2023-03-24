@@ -19,39 +19,37 @@ public class Main {
 		FetchMovies fetchMoviesObj = new FetchMovies();
 		CreateGraph customGraph = new CreateGraph();
 		Search searchMovies = new Search();
-		
-		Scanner scannerObj = new Scanner(System.in);  
+
+		Scanner scannerObj = new Scanner(System.in);
 		customGraph.createGraphFromJson();
 		System.out.println("Welcome to the Movie Search Engine\n");
-		
-		
-		while(true) {
+
+		while (true) {
 			showMenu();
-			try {				
-				int option = scannerObj.nextInt(); 
-				
-				if(option==1) {
+			try {
+				int option = scannerObj.nextInt();
+
+				if (option == 1) {
 					fetchMoviesObj.sync();
-				}else if(option==2) {
+				} else if (option == 2) {
 					searchMovies.main(customGraph);
-					//search related function
-				}else if(option==3) {
+					// search related function
+				} else if (option == 3) {
 					topMovies.main(customGraph);
-					//get top movies
-				}else if(option ==4) {
+					// get top movies
+				} else if (option == 4) {
 					System.out.println("Thankyou, have a nice day.");
 					return;
-				}else {
+				} else {
 					System.out.println("Wrong option, Please select again.");
 				}
-			} 
-			catch (Exception e) {
+			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("\nPlease provide valid inputs.....");
 				System.out.println(e);
 				scannerObj.nextLine();
 			}
 		}
-		
+
 	}
 }
