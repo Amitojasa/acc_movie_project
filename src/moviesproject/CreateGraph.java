@@ -1,5 +1,6 @@
 package moviesproject;
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,7 +24,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import common.BoyerMoore;
-import common.KMP;
 import graphs.Graph;
 import graphs.SymbolGraph;
 import graphs.TST;
