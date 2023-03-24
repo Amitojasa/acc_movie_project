@@ -112,33 +112,33 @@ public class BoyerMoore {
 
     // test client
     public static void main(String[] args) {
-        //String pat = args[0];
-        //String txt = args[1];
- 	   
-        // There are two implmentations of search
- 	   // one is with String and the other is an array of chars
- 	   
-        String pat = "the para";
-        String txt = "Snoopy Presents: Its the Small Things, Charlie Brown";
-        char[] pattern = pat.toCharArray();
-        char[] text    = txt.toCharArray();
-
-        BoyerMoore boyermoore1 = new BoyerMoore(pat);
-        BoyerMoore boyermoore2 = new BoyerMoore(pattern, 256);
-//        int offset1 = boyermoore1.search(txt);
-        int offset2 = boyermoore2.search(text);
- 
-        // print results
-        System.out.println("text:    " + txt);
-
-        System.out.println("pattern: ");
-//        for (int i = 0; i < offset1; i++)
+//        //String pat = args[0];
+//        //String txt = args[1];
+// 	   
+//        // There are two implmentations of search
+// 	   // one is with String and the other is an array of chars
+// 	   
+//        String pat = "the para";
+//        String txt = "Snoopy Presents: Its the Small Things, Charlie Brown";
+//        char[] pattern = pat.toCharArray();
+//        char[] text    = txt.toCharArray();
+//
+//        BoyerMoore boyermoore1 = new BoyerMoore(pat);
+//        BoyerMoore boyermoore2 = new BoyerMoore(pattern, 256);
+////        int offset1 = boyermoore1.search(txt);
+//        int offset2 = boyermoore2.search(text);
+// 
+//        // print results
+//        System.out.println("text:    " + txt);
+//
+//        System.out.println("pattern: ");
+////        for (int i = 0; i < offset1; i++)
+////        	System.out.println(" ");
+////        System.out.println(pat + " at pos " + offset1);
+//
+//        System.out.println("pattern: ");
+//        for (int i = 0; i < offset2; i++)
 //        	System.out.println(" ");
-//        System.out.println(pat + " at pos " + offset1);
-
-        System.out.println("pattern: ");
-        for (int i = 0; i < offset2; i++)
-        	System.out.println(" ");
-        System.out.println(pat + " at pos " + offset2);
+//        System.out.println(pat + " at pos " + offset2);
       }
 }
