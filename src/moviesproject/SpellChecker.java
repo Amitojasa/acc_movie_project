@@ -29,14 +29,14 @@ public class SpellChecker {
 		    		 i++;
 		    	 }
 			}else {
-				for(String word : splitedactor) {
-
-						 if(Sequences.editDistance(word.toLowerCase(), nameOfActor) < 3) {
-							 result.add(actor);
-				    		 i++;
-				    	 }
-
-				}
+//				for(String word : splitedactor) {
+//
+//						 if(Sequences.editDistance(word.toLowerCase(), nameOfActor) < 3) {
+//							 result.add(actor);
+//				    		 i++;
+//				    	 }
+//
+//				}
 			}
 			
 		}
@@ -114,13 +114,13 @@ public class SpellChecker {
 		    		 i++;
 		    	 }
 			}else {
-				for(String word : splitedGenre) {
-						 if(Sequences.editDistance(word.toLowerCase(), nameOfGenre) < 2) {
-							 result.add(genre);
-				    		 i++;
-				    	 }
-
-				}
+//				for(String word : splitedGenre) {
+//						 if(Sequences.editDistance(word.toLowerCase(), nameOfGenre) < 2) {
+//							 result.add(genre);
+//				    		 i++;
+//				    	 }
+//
+//				}
 			}
 			
 			

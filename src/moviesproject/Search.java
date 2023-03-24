@@ -21,7 +21,7 @@ public class Search {
 	public static void searchMovieByActorName(CreateGraph customGraph) {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter the name of actor: ");
+		System.out.print("Enter the name of actor (full name): ");
 		String nameOfActor = ((String) sc.nextLine()).strip().toLowerCase() ;
 		
 		System.out.println();

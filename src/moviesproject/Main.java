@@ -27,25 +27,26 @@ public class Main {
 		
 		while(true) {
 			
-			// show menu
+
 			showMenu();
-			
-			int option = scannerObj.nextInt(); 
-			
-			if(option==1) {
-				fetchMoviesObj.sync();
-			}else if(option==2) {
-				searchMovies.main(customGraph);
-				//search related function
-			}else if(option==3) {
-				topMovies.main(customGraph);
-				//get top movies
-			}else if(option ==4) {
-				System.out.println("Thankyou, have a nice day.");
-				return;
-			}else {
-				System.out.println("Wrong option, Please select again.");
-			}
+
+				int option = scannerObj.nextInt(); 
+				
+				if(option==1) {
+					fetchMoviesObj.sync();
+				}else if(option==2) {
+					searchMovies.main(customGraph);
+					//search related function
+				}else if(option==3) {
+					topMovies.main(customGraph);
+					//get top movies
+				}else if(option ==4) {
+					System.out.println("Thankyou, have a nice day.");
+					return;
+				}else {
+					System.out.println("Wrong option, Please select again.");
+				}
+
 		}
 		
 	}

@@ -179,6 +179,22 @@ public class CreateGraph {
 	}
 	
 	public Set<Integer> getMovieByKeyWord(String key) {
+		
+		
+		// input-> check kiya in unique movies ka hashtable(use get unique movies function) if yes return the movie
+				// if not existing run spell checker - 4-5
+					// the results we got directly show them and ask the user to enter correct input
+					//otherwise 4-5 sort bases on least editdistance
+		
+				//else case (spell cheker reutn 0 movies)  this means it is a substring
+					// if user is inputting more than 1 words either it is compllete movie name or substring
+					//boyremoore, inthis substring movies names array 
+	
+				//else no movie found
+					
+		
+		
+		
 		String[] arr = key.toLowerCase().split(" ");
 		if (arr.length == 1) {
 			return ternarySearchTrie.get(key);

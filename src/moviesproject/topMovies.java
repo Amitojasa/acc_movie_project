@@ -3,6 +3,7 @@ package moviesproject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -36,6 +37,17 @@ public class topMovies {
 		
 		return choices;
 	}
+	
+	
+	
+	
+	// new function created for printing you can remove this but take reference before removing for the parameters
+	public static void getSortedMovies(int x,Movie[] arr){
+		for(int i=0;i<x;i++) {
+			System.out.println(arr[i].getMovieName()+" "+arr[i].getRating()+" "+arr[i].getMovieGenres().size()+" "+arr[i].getMovieCast().size());
+		}
+	}
+	
 	
 	public static Hashtable<Movie, Double> createHashTableOfMOvies(int numberOfMovies, Movie[] arr) {
 		
@@ -184,6 +196,48 @@ public class topMovies {
 		
 		Movie[] arr = customGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
 		
+		
+		
+		
+		
+		/// important sorting done in main
+		Arrays.sort(arr, new Comparator<Movie>() {
+			@Override
+			public int compare(Movie movie1, Movie movie2) {
+				try {					
+					
+					if(movie1.getRating()==movie2.getRating()) {
+						if(movie1.getMovieGenres().size()<movie2.getMovieGenres().size()) {
+							return 1;
+							
+						}else if((movie1.getMovieGenres().size()==movie2.getMovieGenres().size()) ) {
+							
+							if(movie1.getMovieCast().size()<movie2.getMovieCast().size()) {
+								return 1;
+								
+							}else {
+								return -1;
+							}
+							
+						
+						}else {
+							return -1;
+						}
+					}
+					else if (movie1.getRating()<movie2.getRating()) {
+						return 1;
+					}else {
+						return -1;
+					}
+				} catch (Exception e) {
+					return 0;
+				}
+			}
+		});
+		
+		
+		
+		
 		movieHash = createHashTableOfMOvies(numberOfMovies, arr);
 		
 		for (Map.Entry<Movie, Double> entry : movieHash.entrySet()) {
@@ -206,7 +260,14 @@ public class topMovies {
 		switch(getMovieBasedOn) {
 		
 		case 1:
-			sortingBasedOnCast(sortedMovies, numberOfMovies, customGraph, arr);
+			
+			
+			//function edited
+			getSortedMovies(numberOfMovies,arr);
+			
+//			createArrayOfMovies()
+			
+//			sortingBasedOnCast(sortedMovies, numberOfMovies, customGraph, arr);
 			break;
 			
 		case 2:
