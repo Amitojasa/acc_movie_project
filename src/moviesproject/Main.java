@@ -19,8 +19,9 @@ public class Main {
 
 		// creating Objects
 		FetchMovies fetchMoviesObj = new FetchMovies();
-		CreateGraph customGraph = new CreateGraph();
+		GraphProcessingUtils customGraph = new GraphProcessingUtils();
 		Search searchMovies = new Search();
+		TopMovies topMovies = new TopMovies();
 		Scanner scannerObj = new Scanner(System.in);
 
 		// create Graph from JSON file
@@ -65,11 +66,7 @@ public class Main {
 					System.out.println("Wrong option, Please select again.");
 				}
 			} catch (Exception e) {
-
-				// if person enters string in place of integer input
-
 				System.out.println("\nPlease provide valid inputs.....");
-				System.out.println(e);
 				scannerObj.nextLine();
 			}
 		}

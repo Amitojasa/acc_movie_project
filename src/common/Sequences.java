@@ -1,9 +1,8 @@
 package common;
 
-import java.util.Random;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+//////////////////
+//this code might resembles to that provided in the class
+///////////////////
 
 public class Sequences {
 

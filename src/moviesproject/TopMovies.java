@@ -7,41 +7,42 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
 
-public class topMovies {
+public class TopMovies {
 
-	public static Hashtable<Movie, Double> movieHash = new Hashtable<Movie, Double>();
-	public static List<Movie> sortedMovies = new ArrayList<>();
-
+	// A function to display menu to the user
 	public static int showMenu() {
-
-		System.out.println();
-		Scanner sc = new Scanner(System.in);
-		try {
-
+		boolean stayInLoop = true;
+		int numberOfMovies = 0;
+		while(stayInLoop) {			
+			Scanner sc = new Scanner(System.in);
 			System.out.println("\nEnter number of movies that you want to get between 1 to 50:");
-			int numberOfMovies = sc.nextInt();
-			return numberOfMovies;
-		} finally {
-			sc.close();
+			numberOfMovies = sc.nextInt();
+			if (numberOfMovies > 0 && numberOfMovies < 51) {
+				stayInLoop = false;
+			}
+			else {
+				System.out.print("\nEnter correct number.");
+			}
 		}
+		return numberOfMovies;
 	}
-
+	
+	// A function to fetch movies
 	public static void fetchMovies(Movie[] arr) {
 
-		Scanner sc = new Scanner(System.in);
-		try {
-
+			Scanner scannerObj = new Scanner(System.in);
+	
 			System.out.println("\nDo you want to fetch details of particular movie");
 			System.out.println("1: Yes");
 			System.out.println("2: NO");
 			System.out.println("Enter your choice:");
-			int fetchMoiveDetails = sc.nextInt();
+			int fetchMoiveDetails = scannerObj.nextInt();
 
 			switch (fetchMoiveDetails) {
 			case 1:
 				System.out.println();
 				System.out.print("Enter the movie code: ");
-				int movieCode = (sc.nextInt()) - 1;
+				int movieCode = (scannerObj.nextInt()) - 1;
 				System.out.println();
 				System.out.println("********** Details of Movie **********");
 
@@ -57,7 +58,7 @@ public class topMovies {
 				System.out.println("Genres	   : " + movie.getMovieGenres());
 				System.out.println("Cast	   : " + movie.getMovieCast());
 				break;
-
+				
 			case 2:
 				break;
 
@@ -65,11 +66,9 @@ public class topMovies {
 				System.out.println("Please enter a valid choice");
 				break;
 			}
-		} finally {
-			sc.close();
-		}
 	}
 
+	// A function to print the top movies which are sorted
 	public static void printSortedMovies(int x, Movie[] arr) {
 		for (int i = 0; i < x; i++) {
 			System.out.println((i + 1) + " : " + arr[i].getMovieName() + " : Rating: " + arr[i].getRating());
@@ -77,35 +76,46 @@ public class topMovies {
 		fetchMovies(arr);
 	}
 
-	public static void main(CreateGraph customGraph) {
+	
+	// Entry point of this file
+	public void main(GraphProcessingUtils customGraph) {
 
+		// Display menu and get number of movies from user.
 		int numberOfMovies = showMenu();
 
-		Movie[] arr = CreateGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
+		Movie[] arr = GraphProcessingUtils.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
 
-		/// important sorting done in main
+		// important sorting done in main using comparator and Arrays.sort
+		// Here, the rating is considered first, if rating is same, then number of genres and then number of cast is considered
 		Arrays.sort(arr, new Comparator<Movie>() {
 			@Override
 			public int compare(Movie movie1, Movie movie2) {
 				try {
+					
+					// Both movies have have same number of rating sort based on number of genres
 					if (movie1.getRating() == movie2.getRating()) {
 						if (movie1.getMovieGenres().size() < movie2.getMovieGenres().size()) {
 							return 1;
-
-						} else if ((movie1.getMovieGenres().size() == movie2.getMovieGenres().size())) {
-
+						} 
+						
+						// Number of genres of both the movies is also same, sort based on number of cast.
+						else if ((movie1.getMovieGenres().size() == movie2.getMovieGenres().size())) {
 							if (movie1.getMovieCast().size() < movie2.getMovieCast().size()) {
 								return 1;
-
 							} else {
 								return -1;
 							}
-						} else {
+						} 
+						else {
 							return -1;
 						}
-					} else if (movie1.getRating() < movie2.getRating()) {
+					} 
+					
+					//	Rating is different, sort accordingly
+					else if (movie1.getRating() < movie2.getRating()) {
 						return 1;
-					} else {
+					} 
+					else {
 						return -1;
 					}
 				} catch (Exception e) {
@@ -114,6 +124,7 @@ public class topMovies {
 			}
 		});
 
+		// Call the function to print the sorted movies
 		printSortedMovies(numberOfMovies, arr);
 
 	}

@@ -1,5 +1,6 @@
 package moviesproject;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +10,7 @@ import common.Sequences;
 public class SpellChecker {
 	
 
-	public static int byActor(CreateGraph customGraph, String nameOfActor) {
+	public static int byActor(GraphProcessingUtils customGraph, String nameOfActor) {
 		int i = 0;	
 		
 		// Create set based on unique cast name from custom graph 
@@ -18,7 +19,7 @@ public class SpellChecker {
 		// To iterate through set of cast
 		Iterator<String> castIterator = uniquecasts.iterator();
 		
-		// Create hashset to store result of spell checking
+		// Create HashSet to store result of spell checking
 		HashSet<String> result = new HashSet<String>();
 		
 		// Iterate through castIterator set till it reach to last value
@@ -37,42 +38,33 @@ public class SpellChecker {
 					 // add actor name into result hashset
 		    		result.add(actor);
 		    		 i++;
-		    		 // To show first 5 results of edit distance
-		    		 if(i==4) {
-		    			 break;
+		    		 // To show first 9 results of edit distance
+		    		 if(i == 9) {
+		    			 castIterator = Collections.emptyIterator();
 		    		 }
 		    	 }
-			}else {
-//				for(String word : splitedactor) {
-//
-//						 if(Sequences.editDistance(word.toLowerCase(), nameOfActor) < 3) {
-//							 result.add(actor);
-//				    		 i++;
-//				    	 }
-//
-//				}
 			}
 			
 		}
-		// if result hashset has values
+		// if HashSet of result has values
 		if (!result.isEmpty()) {
 			System.out.println("Do you mean by....");
 		}
 		
-		// Iterate through result hashset and print all suggestion based on spell checking
+		// Iterate through results and print all suggestion based on spell checking
 		for(String s : result) {
 			System.out.println(s);
 		}
 		return i;
 	}
 	
-	public static int bymoviename(CreateGraph customGraph, String nameOfMovie) {
+	public static int bymoviename(GraphProcessingUtils customGraph, String nameOfMovie) {
 		int i = 0;
 		
-		// Create list based on allmovienames from custom graph 
+		// Create list based on all movie names from custom graph 
 		List<String> allmovies = customGraph.getAllMovieNames();
 
-		// Create hashset to store result of spell checking
+		// Create HashSet to store result of spell checking
 		HashSet<String> result = new HashSet<String>();
 		Iterator<String> movies = allmovies.iterator();
 		
@@ -80,39 +72,39 @@ public class SpellChecker {
 		while(movies.hasNext()) {
 			String moviename = movies.next();
 			
-			// Create string array of movie name splited by space 
+			// Create string array of movie name split by space 
 			String[] splitedmovienames = moviename.trim().split(" ");
-			//Create string array of user input splited by space 
+			//Create string array of user input split by space 
 			String[] splitedInputMovieName = nameOfMovie.trim().split(" ");
 			
-			// If splited array of user input length is grater than 1
-			if(splitedInputMovieName.length>1) {
+			// If split array of user input length is grater than 1
+			if(splitedInputMovieName.length > 1) {
 				// call the edit distance method, and if the returned edit distance is less than 4
 				 if(Sequences.editDistance(moviename.toLowerCase(), nameOfMovie) < 4) {
 		    		 result.add(moviename);
 		    		 i++;
-		    		 if(i==4) {
-		    			 break;
+		    		 if(i == 9) {
+		    			 movies = Collections.emptyIterator();
 		    		 }
 		    	 }
 			}else {
-				// Iterate through splited movie names array
+				// Iterate through split movie names array
 				for(String word : splitedmovienames) {
 					// If length of user input is grater than 5 and edit distance is less than 3 then
 						 if(nameOfMovie.length()>5 && Sequences.editDistance(word.toLowerCase(), nameOfMovie) < 3) {
-							 // add actor name into result hashset
+							 // add actor name into result HashSet
 							 result.add(moviename);
 				    		 i++;
-				    		 if(i==4) {
-				    			 break;
+				    		 if(i == 9) {
+				    			 movies = Collections.emptyIterator();
 				    		 }
 				    	 }
 						// If length of user input is grater than 3 and edit distance is less than 2 then
 						 else if(nameOfMovie.length()>3 && Sequences.editDistance(word.toLowerCase(), nameOfMovie) < 2) {
 							 result.add(moviename);
 				    		 i++;
-				    		 if(i==4) {
-				    			 break;
+				    		 if(i == 9) {
+				    			 movies = Collections.emptyIterator();
 				    		 }
 				    	 }
 				}
@@ -130,7 +122,7 @@ public class SpellChecker {
 
 	
 	
-	public static int byGenre(CreateGraph customGraph, String nameOfGenre) {
+	public static int byGenre(GraphProcessingUtils customGraph, String nameOfGenre) {
 		int i = 0;
 		
 		// Create set based on unique genres name from custom graph
@@ -154,28 +146,16 @@ public class SpellChecker {
 				 if(Sequences.editDistance(genre.toLowerCase(), nameOfGenre) < 3) {
 		    		 result.add(genre);
 		    		 i++;
-		    		 if(i==4) {
-		    			 break;
+		    		 if(i == 9) {
+		    			 genres = Collections.emptyIterator();
 		    		 }
 		    	 }
-			}else {
-//				for(String word : splitedGenre) {
-//						 if(Sequences.editDistance(word.toLowerCase(), nameOfGenre) < 2) {
-//							 result.add(genre);
-//				    		 i++;
-//				    	 }
-//
-//				}
 			}
-			
-			
-
 		}
 		if (!result.isEmpty()) {
 			System.out.println("Do you mean by....");
 		}
 		for(String s : result) {
-			
 			System.out.println(s);
 		}
 		return i;

@@ -18,29 +18,35 @@ import graphs.SymbolGraph;
 import graphs.TST;
 import common.BoyerMoore;
 
-public class CreateGraph {
+public class GraphProcessingUtils {
+	
+	// Object declaration and initialization
 
-	List<String> movieNames = new ArrayList<String>();
 	Set<String> uniqueCast = new HashSet<String>();
 	Set<String> setOfGenres = new HashSet<String>();
+	
+	List<String> movieNames = new ArrayList<String>();
 	List<String> collectionMovieAndCast = new ArrayList<String>();
 	List<List<String>> collectionCastRespectToMovie = new ArrayList<List<String>>();
-
 	List<List<String>> collectionMovieRespectToGenre = new ArrayList<List<String>>();
-
-	static Hashtable<String, Integer> movieIndex = new Hashtable<String, Integer>();
+	
 	JSONArray arrayOfMoviesWithDetails = new JSONArray();
-
+	
+	static Hashtable<String, Integer> movieIndex = new Hashtable<String, Integer>();
 	static SymbolGraph sgForMovieCast, sgForMovieGenre, sgForMovieActor;
 	static Graph movieCastGraph, movieGenreGraph;
-	TST<Set<Integer>> ternarySearchTrie = new TST<Set<Integer>>();
 
+	TST<Set<Integer>> ternarySearchTrie = new TST<Set<Integer>>();
+	
 	Movie[] arrayForSorting;
 
+	
+	// A method to insert data in Ternary Search Trie
 	public void putMovieInTrie(String nameOfMovie, int currentIndex) {
 		String[] wordsInMovies = nameOfMovie.toLowerCase().split(" ");
 
 		for (String word : wordsInMovies) {
+			// Trie Leaf nodes will store the Set of movies
 			Set<Integer> indexesOfMovies = new HashSet<Integer>();
 
 			if (!ternarySearchTrie.contains(word)) {
@@ -56,10 +62,16 @@ public class CreateGraph {
 		}
 	}
 
+	
+	// Creating SymbolGraph and Graph from JSON
 	public void createGraphFromJson() throws FileNotFoundException, IOException, ParseException {
 
-		JSONParser parserForJson = new JSONParser();
+		JSONParser parserForJson = new JSONParser();	// Creating JSONParser object
+		
+		// Getting array of movies from JSON
 		arrayOfMoviesWithDetails = (JSONArray) parserForJson.parse(new FileReader("moviesNew.json"));
+		
+		// Create object of movies
 		createArrayForMovies(arrayOfMoviesWithDetails);
 
 		int currentIndexOfMovie = 0;
@@ -101,29 +113,26 @@ public class CreateGraph {
 			collectionMovieRespectToGenre.add(tempListToHandleMovieGenre);
 
 		}
-
+		
+		
+		// Creating SymbolGraphs
+		
+		// SymbolGraph for Movie name with respect to cast
 		sgForMovieCast = new SymbolGraph(collectionCastRespectToMovie);
-
+		
+		// SymbolGraph for Movie name with respect to genres
 		sgForMovieGenre = new SymbolGraph(collectionMovieRespectToGenre);
 
 		movieCastGraph = sgForMovieCast.G();
 		movieGenreGraph = sgForMovieGenre.G();
 
-		movieCastGraph.toString();
-
-		System.out.println("");
-		if (sgForMovieCast.contains("Nick Preston")) {
-			Iterable<Integer> t = movieCastGraph.adj(sgForMovieCast.index("Nick Preston"));
-			for (Integer i : t) {
-				System.out.println(sgForMovieCast.name(i));
-			}
-		}
 	}
-
+	
 	public List<String> getAllMovieNames() {
 		return movieNames;
 	}
 
+	// Returns the name of movie from index
 	public String getMovieFromIndex(int indexOfMovie) {
 		JSONObject movieObject = (JSONObject) arrayOfMoviesWithDetails.get(indexOfMovie);
 		return (String) movieObject.get("movieName");
@@ -164,93 +173,73 @@ public class CreateGraph {
 	public static int getCodeOfMovie(String nameOfMovie) {
 		return movieIndex.get(nameOfMovie);
 	}
-
-	public Set<Integer> getMovieByKeyWord(String key, CreateGraph customGraph) {
-
-		// input-> check kiya in unique movies ka hashtable(use get unique movies
-		// function) if yes return the movie
-		// if not existing run spell checker - 4-5
-		// the results we got directly show them and ask the user to enter correct input
-		// otherwise 4-5 sort bases on least editdistance
-
-		// else case (spell cheker reutn 0 movies) this means it is a substring
-		// if user is inputting more than 1 words either it is compllete movie name or
-		// substring
-		// boyremoore, inthis substring movies names array
-
-		// else no movie found
+	
+	
+	// Searches for the movie based on the user's input
+	public Set<Integer> getMovieByKeyWord(String key, GraphProcessingUtils customGraph) {
 
 		Set<Integer> setOfMovies = new HashSet<Integer>();
 		List<String> listOfFaultyMovies = new ArrayList<String>();
 
 		String[] arr = key.toLowerCase().split(" ");
+		
+		// If user enters only one word
 		if (arr.length == 1) {
+			
+			// Use try to retrieve the movie
 			if (ternarySearchTrie.get(key) != null) {
 				return ternarySearchTrie.get(key);
 			} else {
-
+				
+				// Trie could not find the movie, check if it is a substring or not
 				for (String movieInDB : this.getAllMovieNames()) {
-					// TODO: cofirmation about this
-//						if(!movieInDB.contains("\u2019")) {
-
 					try {
 						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
-
 						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
 						if (offset1 < movieInDB.length()) {
-
-//								System.out.println(movieInDB);
 							listOfFaultyMovies.add(movieInDB);
 						}
-					} catch (Exception e) {
-//						System.out.println(movieInDB+" "+e);
-					}
-
-//						}
-
+					} catch (Exception e) {}
 				}
 			}
-		} else {
+		} 
+		
+		// User entered more than one word
+		else {
 			if (!this.getAllMovieNames().contains(key)) {
 				for (String movieInDB : this.getAllMovieNames()) {
-
-					// TODO: cofirmation about this
-//					if(!movieInDB.contains("\u2019")) {
-
-					BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
-
-					int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
-
-					if (offset1 < movieInDB.length()) {
-						listOfFaultyMovies.add(movieInDB);
-
+					try {
+						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
+						if (offset1 < movieInDB.length()) {
+							listOfFaultyMovies.add(movieInDB);		
+						}
 					}
-//					}
+					catch(Exception e) {}
 				}
 			}
 		}
 
+		// Boyer moore could not find any pattern, check for spelling mistakes
 		if (listOfFaultyMovies.size() == 0) {
-			System.out.println("Insisde...");
 			SpellChecker.bymoviename(customGraph, key);
 		}
-
-//			else if(listOfFaultyMovies.size() == 1) {
-//				setOfMovies.add(movieIndex.get(listOfFaultyMovies.get(0)));
-//			}
 		else if (listOfFaultyMovies.size() > 0) {
 
-			// TODO: if it is getting printed multiple times
-			System.out.println("Did you mean ... ");
+			System.out.println("Some similar results... ");
+			int i = 0;
 			for (String a : listOfFaultyMovies) {
 				setOfMovies.add(movieIndex.get(a));
+				if (i == 9) {
+					break;
+				}
+				i++;
 			}
-
 		}
-
 		return setOfMovies;
 	}
 
+	// Print details in a structured format
 	public JSONObject printMovieDetails(int movieCode) {
 		JSONObject movieObject = (JSONObject) arrayOfMoviesWithDetails.get(movieCode);
 
@@ -267,13 +256,12 @@ public class CreateGraph {
 		return movieObject;
 	}
 
+	// Create objects of movies
 	public static Movie[] createArrayForMovies(JSONArray jsonArray) {
 		Movie[] movieArray = new Movie[jsonArray.size()];
 		int j = 0;
 		for (Object i : jsonArray) {
-
 			JSONObject currentMovie = (JSONObject) i;
-
 			Movie movie = new Movie((String) currentMovie.get("movieName"), (String) currentMovie.get("movieRating"),
 					(String) currentMovie.get("movieDesc"), (String) currentMovie.get("movieLength"),
 					(String) currentMovie.get("movieYear"), (JSONArray) currentMovie.get("genres"),
@@ -285,10 +273,11 @@ public class CreateGraph {
 		return movieArray;
 	}
 
+	// List of stop words to filter out unnecessary inputs
 	public static boolean isStopWord(String word) {
 		String[] stopWords = { "a", "an", "the", "in", "on", "at", "for", "and", "or", "but", "with", "is", "are",
 				"was", "were", "be", "been", "has", "have", "had", "this", "that", "these", "those", "there", "here",
-				"where", "when", "who", "what", "why", "how", "which", "by", "from", "to", "of" };
+				 "from", "to", "of" };
 		return Arrays.asList(stopWords).contains(word.toLowerCase());
 	}
 
