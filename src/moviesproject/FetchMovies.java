@@ -18,7 +18,7 @@ class FetchMovies {
 		
 		
 		//// change the stop to 1 to run this file
-		int stop=1;
+		int stop=0;
 		
 		
 		///Please Read:
