@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-//Task 4
+//////////////////
+//this code might resembles to that provided in the class
+///////////////////
 
 public class SymbolGraph {
     private ST<String, Integer> st;  // string -> index

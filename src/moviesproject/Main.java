@@ -16,35 +16,60 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
+		
+		//creating Objects
 		FetchMovies fetchMoviesObj = new FetchMovies();
 		CreateGraph customGraph = new CreateGraph();
 		Search searchMovies = new Search();
-
 		Scanner scannerObj = new Scanner(System.in);
+		
+		// create Graph from JSON file
 		customGraph.createGraphFromJson();
+		
+		
 		System.out.println("Welcome to the Movie Search Engine\n");
 
+		
+		//loop until 4 is selected
 		while (true) {
+			
+			//show the menu
 			showMenu();
+			
 			try {
+				
+				//take input from user
 				int option = scannerObj.nextInt();
 
 				if (option == 1) {
+					
+					//sync/fetch movie details
 					fetchMoviesObj.sync();
+					
 				} else if (option == 2) {
+					
+					// search function
 					searchMovies.main(customGraph);
-					// search related function
+					
 				} else if (option == 3) {
-					topMovies.main(customGraph);
+					
 					// get top movies
+					topMovies.main(customGraph);
+					
 				} else if (option == 4) {
+					
+					//exit from the loop
 					System.out.println("Thankyou, have a nice day.");
 					return;
+					
 				} else {
+					// in case wrong input is selected
 					System.out.println("Wrong option, Please select again.");
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
+				//if person enters string in place of integer input
+				
 				System.out.println("\nPlease provide valid inputs.....");
 				System.out.println(e);
 				scannerObj.nextLine();

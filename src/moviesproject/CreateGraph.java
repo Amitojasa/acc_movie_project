@@ -13,11 +13,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import common.BoyerMoore;
 import graphs.Graph;
 import graphs.SymbolGraph;
 import graphs.TST;
-
+import common.BoyerMoore;
 public class CreateGraph {
 
 	List<String> movieNames = new ArrayList<String>();
@@ -188,45 +187,72 @@ public class CreateGraph {
 				return ternarySearchTrie.get(key);
 			}
 			else {
-				for (String movieInDB : this.getAllMovieNames()) {		
-						if(!movieInDB.contains("\u2019")) {
+			
+				for (String movieInDB : this.getAllMovieNames()) {	
+					//TODO: cofirmation about this
+//						if(!movieInDB.contains("\u2019")) {
+					
+					try {
 							BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+					
 							int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
-							if (offset1 != movieInDB.length()) {
-								System.out.println("Did you mean...");
-								System.out.println(movieInDB);
+							if (offset1 < movieInDB.length()) {
+								
+//								System.out.println(movieInDB);
 								listOfFaultyMovies.add(movieInDB);
 							}
-						}
+					}catch(Exception e){
+//						System.out.println(movieInDB+" "+e);
+					}
+							
+//						}
+							
+							
 				}
 			}
 		}
 		else {
 			if(!this.getAllMovieNames().contains(key)) {
 				// TODO: Boyer Moore goes here
-				for (String movieInDB : this.getAllMovieNames()) {						
-					if(!movieInDB.contains("\u2019")) {
+				for (String movieInDB : this.getAllMovieNames()) {	
+					
+					//TODO: cofirmation about this
+//					if(!movieInDB.contains("\u2019")) {
 						
 						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
 						
 						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
-						int count = 0;
+						
+						
 						if (offset1 < movieInDB.length()) {
 							listOfFaultyMovies.add(movieInDB);
+							
 						}
-					}
+//					}
 				}
 			}
-			if (listOfFaultyMovies.size() == 0) {
-				SpellChecker spellChecker = new SpellChecker();
-				SpellChecker.bymoviename(customGraph, key);
-			}
-			else if(listOfFaultyMovies.size() == 1) {
-				System.out.print("Did you mean ... ");
-				setOfMovies.add(movieIndex.get(listOfFaultyMovies.get(0)));
+		}
+		
+		
+		if (listOfFaultyMovies.size() == 0) {
+			SpellChecker spellChecker = new SpellChecker();
+			SpellChecker.bymoviename(customGraph, key);
+		}
+		
+//			else if(listOfFaultyMovies.size() == 1) {
+//				setOfMovies.add(movieIndex.get(listOfFaultyMovies.get(0)));
+//			}
+		else if(listOfFaultyMovies.size() > 0) {
+			
+			//TODO: if it is getting printed multiple times
+			System.out.println("Did you mean ... ");
+			for (String a: listOfFaultyMovies) {
+				setOfMovies.add(movieIndex.get(a));
 			}
 			
 		}
+			
+		
 		return setOfMovies;
 	}
 

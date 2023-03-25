@@ -10,9 +10,12 @@ public class Movie {
 	private JSONArray genres;
 	private JSONArray cast;
 
-	// Add other movie attributes here
-
+	
+	//Constructor of Movie
+	
 	public Movie(String title, String rating, String desc, String length, String year, JSONArray genres, JSONArray cast) {
+		
+		
 		if (title.isBlank()) {
 			this.movieName = "No name found";
 		} else {
@@ -40,33 +43,43 @@ public class Movie {
 		this.movieRating = rating;
 		this.genres = genres;
 		this.cast = cast;
-		// Initialize other movie attributes here
+		
 	}
 
+	
+	//getters
+	
+	//get movie name
 	public String getMovieName() {
 		return movieName;
 	}
 
+	//get movie description
 	public String getMovieDesc() {
 		return movieDesc;
 	}
 
+	//get movie duration
 	public String getMovieDuration() {
 		return movieLength;
 	}
 
+	//get Movie release year
 	public String getMovieRelease() {
 		return movieyear;
 	}
 
+	//get movie genre
 	public JSONArray getMovieGenres() {
 		return genres;
 	}
 
+	//get movie cast
 	public JSONArray getMovieCast() {
 		return cast;
 	}
 
+	//get rating converted to double from string
 	public double getRating() {
 		try {
 			return Double.parseDouble(movieRating.strip());

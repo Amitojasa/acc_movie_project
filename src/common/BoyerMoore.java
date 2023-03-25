@@ -1,38 +1,8 @@
 package common;
 
-//import textprocessing.BoyerMoore;
-
-
-/***************************************************************
- *  Compilation:  javac BoyerMoore.java
- *  Execution:    java BoyerMoore pattern text
- *
- *  Reads in two strings, the pattern and the input text, and
- *  searches for the pattern in the input text using the
- *  bad-character rule part of the Boyer-Moore algorithm.
- *  (does not implement the strong good suffix rule)
- *
- *  % java BoyerMoore abracadabra abacadabrabracabracadabrabrabracad
- *  text:    abacadabrabracabracadabrabrabracad 
- *  pattern:               abracadabra
- *
- *  % java BoyerMoore rab abacadabrabracabracadabrabrabracad
- *  text:    abacadabrabracabracadabrabrabracad 
- *  pattern:         rab
- *
- *  % java BoyerMoore bcara abacadabrabracabracadabrabrabracad
- *  text:    abacadabrabracabracadabrabrabracad 
- *  pattern:                                   bcara
- *
- *  % java BoyerMoore rabrabracad abacadabrabracabracadabrabrabracad
- *  text:    abacadabrabracabracadabrabrabracad
- *  pattern:                        rabrabracad
- *
- *  % java BoyerMoore abacad abacadabrabracabracadabrabrabracad
- *  text:    abacadabrabracabracadabrabrabracad
- *  pattern: abacad
- *
- ***************************************************************/
+//////////////////
+//this code might resembles to that provided in the class
+///////////////////
 
 public class BoyerMoore {
     private final int R;     // the radix
@@ -110,35 +80,5 @@ public class BoyerMoore {
 
 
 
-    // test client
-    public static void main(String[] args) {
-//        //String pat = args[0];
-//        //String txt = args[1];
-// 	   
-//        // There are two implmentations of search
-// 	   // one is with String and the other is an array of chars
-// 	   
-//        String pat = "the para";
-//        String txt = "Snoopy Presents: Its the Small Things, Charlie Brown";
-//        char[] pattern = pat.toCharArray();
-//        char[] text    = txt.toCharArray();
-//
-//        BoyerMoore boyermoore1 = new BoyerMoore(pat);
-//        BoyerMoore boyermoore2 = new BoyerMoore(pattern, 256);
-////        int offset1 = boyermoore1.search(txt);
-//        int offset2 = boyermoore2.search(text);
-// 
-//        // print results
-//        System.out.println("text:    " + txt);
-//
-//        System.out.println("pattern: ");
-////        for (int i = 0; i < offset1; i++)
-////        	System.out.println(" ");
-////        System.out.println(pat + " at pos " + offset1);
-//
-//        System.out.println("pattern: ");
-//        for (int i = 0; i < offset2; i++)
-//        	System.out.println(" ");
-//        System.out.println(pat + " at pos " + offset2);
-      }
+  
 }

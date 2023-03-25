@@ -5,6 +5,10 @@ import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+//////////////////
+//this code might resembles to that provided in the class
+///////////////////
+
 
 public class ST<Key extends Comparable<Key>, Value> implements Iterable<Key> {
 

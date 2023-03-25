@@ -263,7 +263,7 @@ public class Search {
 
 	}
 
-	public static void main(CreateGraph customGraph) {
+	public void main(CreateGraph customGraph) {
 
 		showMoviesMenu();
 
