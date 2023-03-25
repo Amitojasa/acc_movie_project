@@ -219,15 +219,16 @@ public class Search {
 			System.out.println();
 			fetchMovie(customGraph);
 
-		} else {
-			// TODO: Edit Distance goes here.
-			SpellChecker spellcheck = new SpellChecker();
-			int exist = spellcheck.bymoviename(customGraph, word);
-
-			if (exist == 0) {
-				System.out.println("No movies found.");
-			}
-		}
+		} 
+//		else {
+//			// TODO: Edit Distance goes here.
+//			SpellChecker spellcheck = new SpellChecker();
+//			int exist = spellcheck.bymoviename(customGraph, word);
+//
+//			if (exist == 0) {
+//				System.out.println("No movies found.");
+//			}
+//		}
 	}
 
 	public static void searchMovieByGenre(CreateGraph customGraph) {

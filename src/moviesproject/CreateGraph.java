@@ -235,6 +235,7 @@ public class CreateGraph {
 		
 		
 		if (listOfFaultyMovies.size() == 0) {
+			System.out.println("Insisde...");
 			SpellChecker spellChecker = new SpellChecker();
 			SpellChecker.bymoviename(customGraph, key);
 		}
