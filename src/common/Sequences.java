@@ -1,4 +1,4 @@
-package moviesproject;
+package common;
 
 import java.util.Random;
 import java.io.BufferedReader;

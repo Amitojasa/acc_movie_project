@@ -1,11 +1,10 @@
 package moviesproject;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
+import common.Sequences;
 
 public class SpellChecker {
 	

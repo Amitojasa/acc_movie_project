@@ -17,15 +17,16 @@ import graphs.Graph;
 import graphs.SymbolGraph;
 import graphs.TST;
 import common.BoyerMoore;
+
 public class CreateGraph {
 
 	List<String> movieNames = new ArrayList<String>();
 	Set<String> uniqueCast = new HashSet<String>();
 	Set<String> setOfGenres = new HashSet<String>();
 	List<String> collectionMovieAndCast = new ArrayList<String>();
-	List<List<String>> collectionCastRespectToMovie = new ArrayList();
+	List<List<String>> collectionCastRespectToMovie = new ArrayList<List<String>>();
 
-	List<List<String>> collectionMovieRespectToGenre = new ArrayList();
+	List<List<String>> collectionMovieRespectToGenre = new ArrayList<List<String>>();
 
 	static Hashtable<String, Integer> movieIndex = new Hashtable<String, Integer>();
 	JSONArray arrayOfMoviesWithDetails = new JSONArray();
@@ -59,7 +60,7 @@ public class CreateGraph {
 
 		JSONParser parserForJson = new JSONParser();
 		arrayOfMoviesWithDetails = (JSONArray) parserForJson.parse(new FileReader("moviesNew.json"));
-		Movie[] arrayforSorting = createArrayForMovies(arrayOfMoviesWithDetails);
+		createArrayForMovies(arrayOfMoviesWithDetails);
 
 		int currentIndexOfMovie = 0;
 
@@ -108,7 +109,7 @@ public class CreateGraph {
 		movieCastGraph = sgForMovieCast.G();
 		movieGenreGraph = sgForMovieGenre.G();
 
-		String s = movieCastGraph.toString();
+		movieCastGraph.toString();
 
 		System.out.println("");
 		if (sgForMovieCast.contains("Nick Preston")) {
@@ -163,104 +164,95 @@ public class CreateGraph {
 	public static int getCodeOfMovie(String nameOfMovie) {
 		return movieIndex.get(nameOfMovie);
 	}
-	
+
 	public Set<Integer> getMovieByKeyWord(String key, CreateGraph customGraph) {
-		
-		
-		// input-> check kiya in unique movies ka hashtable(use get unique movies function) if yes return the movie
-				// if not existing run spell checker - 4-5
-					// the results we got directly show them and ask the user to enter correct input
-					//otherwise 4-5 sort bases on least editdistance
-		
-				//else case (spell cheker reutn 0 movies)  this means it is a substring
-					// if user is inputting more than 1 words either it is compllete movie name or substring
-					//boyremoore, inthis substring movies names array 
-	
-				//else no movie found
-		
+
+		// input-> check kiya in unique movies ka hashtable(use get unique movies
+		// function) if yes return the movie
+		// if not existing run spell checker - 4-5
+		// the results we got directly show them and ask the user to enter correct input
+		// otherwise 4-5 sort bases on least editdistance
+
+		// else case (spell cheker reutn 0 movies) this means it is a substring
+		// if user is inputting more than 1 words either it is compllete movie name or
+		// substring
+		// boyremoore, inthis substring movies names array
+
+		// else no movie found
+
 		Set<Integer> setOfMovies = new HashSet<Integer>();
 		List<String> listOfFaultyMovies = new ArrayList<String>();
-		
+
 		String[] arr = key.toLowerCase().split(" ");
 		if (arr.length == 1) {
-			if(ternarySearchTrie.get(key) != null) {				
+			if (ternarySearchTrie.get(key) != null) {
 				return ternarySearchTrie.get(key);
-			}
-			else {
-			
-				for (String movieInDB : this.getAllMovieNames()) {	
-					//TODO: cofirmation about this
+			} else {
+
+				for (String movieInDB : this.getAllMovieNames()) {
+					// TODO: cofirmation about this
 //						if(!movieInDB.contains("\u2019")) {
-					
+
 					try {
-							BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
-					
-							int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
-							if (offset1 < movieInDB.length()) {
-								
+						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+
+						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
+						if (offset1 < movieInDB.length()) {
+
 //								System.out.println(movieInDB);
-								listOfFaultyMovies.add(movieInDB);
-							}
-					}catch(Exception e){
+							listOfFaultyMovies.add(movieInDB);
+						}
+					} catch (Exception e) {
 //						System.out.println(movieInDB+" "+e);
 					}
-							
+
 //						}
-							
-							
+
 				}
 			}
-		}
-		else {
-			if(!this.getAllMovieNames().contains(key)) {
-				// TODO: Boyer Moore goes here
-				for (String movieInDB : this.getAllMovieNames()) {	
-					
-					//TODO: cofirmation about this
+		} else {
+			if (!this.getAllMovieNames().contains(key)) {
+				for (String movieInDB : this.getAllMovieNames()) {
+
+					// TODO: cofirmation about this
 //					if(!movieInDB.contains("\u2019")) {
-						
-						BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
-						
-						int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
-						
-						
-						if (offset1 < movieInDB.length()) {
-							listOfFaultyMovies.add(movieInDB);
-							
-						}
+
+					BoyerMoore boyerObj = new BoyerMoore(key.strip().toLowerCase());
+
+					int offset1 = boyerObj.search(movieInDB.strip().toLowerCase());
+
+					if (offset1 < movieInDB.length()) {
+						listOfFaultyMovies.add(movieInDB);
+
+					}
 //					}
 				}
 			}
 		}
-		
-		
+
 		if (listOfFaultyMovies.size() == 0) {
 			System.out.println("Insisde...");
-			SpellChecker spellChecker = new SpellChecker();
 			SpellChecker.bymoviename(customGraph, key);
 		}
-		
+
 //			else if(listOfFaultyMovies.size() == 1) {
 //				setOfMovies.add(movieIndex.get(listOfFaultyMovies.get(0)));
 //			}
-		else if(listOfFaultyMovies.size() > 0) {
-			
-			//TODO: if it is getting printed multiple times
+		else if (listOfFaultyMovies.size() > 0) {
+
+			// TODO: if it is getting printed multiple times
 			System.out.println("Did you mean ... ");
-			for (String a: listOfFaultyMovies) {
+			for (String a : listOfFaultyMovies) {
 				setOfMovies.add(movieIndex.get(a));
 			}
-			
+
 		}
-			
-		
+
 		return setOfMovies;
 	}
 
 	public JSONObject printMovieDetails(int movieCode) {
 		JSONObject movieObject = (JSONObject) arrayOfMoviesWithDetails.get(movieCode);
-
-		ArrayList genres = (ArrayList) movieObject.get("genres");
 
 		System.out.println();
 

@@ -13,6 +13,7 @@ import graphs.SymbolGraph;
 
 public class Search {
 
+	// method to display movies menu
 	public static void showMoviesMenu() {
 		System.out.println();
 		System.out.println("=====+=====+===== Search Menu =====+=====+=====");
@@ -24,9 +25,11 @@ public class Search {
 		System.out.println();
 	}
 
+	// method to search movie by actor name
 	public static void searchMovieByActorName(CreateGraph customGraph) {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
+
 		System.out.print("Enter the name of actor (full name): ");
 		String nameOfActor = ((String) sc.nextLine()).strip().toLowerCase();
 
@@ -39,21 +42,15 @@ public class Search {
 					.adj(customGraph.getSymbolGraphForMoviesWithCast().index(nameOfActor));
 			for (Integer i : listOfMovies) {
 				System.out.print(
-						customGraph.getCodeOfMovie(customGraph.getSymbolGraphForMoviesWithCast().name(i)) + ": ");
+						CreateGraph.getCodeOfMovie(customGraph.getSymbolGraphForMoviesWithCast().name(i)) + ": ");
 				System.out.println(customGraph.getSymbolGraphForMoviesWithCast().name(i));
 			}
 
 			System.out.println();
-
 			fetchMovie(customGraph);
 
 		} else {
-			// TODO: Edit Distance call goes here.
-			SpellChecker spellcheck = new SpellChecker();
-
-			int exist = spellcheck.byActor(customGraph, nameOfActor);
-//			int exist =  spellcheck.bymoviename(customGraph, nameOfActor);
-
+			int exist = SpellChecker.byActor(customGraph, nameOfActor);
 			if (exist == 0) {
 				System.out.println("Could not find actor.");
 			}
@@ -62,7 +59,6 @@ public class Search {
 
 	public static void fetchMovie(CreateGraph customGraph) {
 		Scanner sc = new Scanner(System.in);
-
 		System.out.println("Do you want to fetch the details of a particular movie?");
 		System.out.println("1: Yes");
 		System.out.println("2: No");
@@ -84,43 +80,71 @@ public class Search {
 				showSuggestionsBasedOnMovie(customGraph, movieForSuggestion);
 			}
 		}
-
 	}
 
+	// displays suggestions based on a movie
+	@SuppressWarnings("unchecked")
 	private static void showSuggestionsBasedOnMovie(CreateGraph customGraph, JSONObject movieForSuggestion) {
 
-		JSONArray jsonArray1 = (JSONArray) movieForSuggestion.get("cast");
-		String[] c = new String[jsonArray1.size()];
-		for (int i = 0; i < jsonArray1.size(); i++) {
-			c[i] = jsonArray1.get(i).toString();
+		// retrieves cast array from movie's json object
+		JSONArray jsonArrayOfCast = (JSONArray) movieForSuggestion.get("cast");
+		// converts json array to string array
+		String[] stringArrayOfCast = new String[jsonArrayOfCast.size()];
+		for (int i = 0; i < jsonArrayOfCast.size(); i++) {
+			stringArrayOfCast[i] = jsonArrayOfCast.get(i).toString();
 		}
 
-		JSONArray jsonArray2 = (JSONArray) movieForSuggestion.get("genres");
-		String[] c1 = new String[jsonArray2.size()];
-		for (int i = 0; i < jsonArray2.size(); i++) {
-			c1[i] = jsonArray2.get(i).toString();
+		// retrieves genres array from movie's json object
+		JSONArray jsonArrayOfGenres = (JSONArray) movieForSuggestion.get("genres");
+		// converts json array to string array
+		String[] stringArrayOfGenres = new String[jsonArrayOfGenres.size()];
+		for (int i = 0; i < jsonArrayOfGenres.size(); i++) {
+			stringArrayOfGenres[i] = jsonArrayOfGenres.get(i).toString();
 		}
+
+		// retrieves movies of all the actors listed in movie we use for suggestion,
+		// from symbol graph of actorsAndMovies
 		Set<String> listBasedOnActors = findMoviesInSymbolGraphOfActor(customGraph.getSymbolGraphForMoviesWithCast(),
-				customGraph.getGraphForMoviesWithCast(), c);
+				customGraph.getGraphForMoviesWithCast(), stringArrayOfCast);
+		// retrieves movies of all the genres listed in movie we use for suggestion,
+		// from symbol graph of actorsAndMovies
 		Set<String> listBasedOnGenre = findMoviesInSymbolGraphOfGenre(customGraph.getSymbolGraphForMoviesWithGenre(),
-				customGraph.getGraphForMoviesWithGenre(), c1);
+				customGraph.getGraphForMoviesWithGenre(), stringArrayOfGenres);
+
+		Set<String> suggestedMovies;
+		// if both the list are empty then no movies can be suggested.
 		if (listBasedOnGenre.isEmpty() && listBasedOnActors.isEmpty()) {
 			System.out.println("Sorry. No suggestions found related to this movie.");
+			return;
 		} else if (listBasedOnActors.isEmpty()) {
-			// nothing needed
+			// if list based on actors is empty then list based on genre will be shown in
+			// suggestion.
+			suggestedMovies = listBasedOnGenre;
 		} else if (listBasedOnGenre.isEmpty()) {
-			listBasedOnGenre = listBasedOnActors;
-
+			// if list based on genres is empty then list based on actors will be shown in
+			// suggestion.
+			suggestedMovies = listBasedOnGenre;
 		} else {
-			listBasedOnGenre.retainAll(listBasedOnActors);
+			// if both list are present, common movies from both the list will be shown.
+			suggestedMovies = listBasedOnGenre;
+			suggestedMovies.retainAll(listBasedOnActors);
 		}
 
-		listBasedOnGenre.remove(movieForSuggestion);
+		// if movie from which we are suggesting other movies is present in suggestion
+		// list then it would be removed.
+		suggestedMovies.remove(movieForSuggestion.toString());
+
 		JSONArray jsonMovieArr = new JSONArray();
-		for (String movieName : listBasedOnGenre) {
-			jsonMovieArr.add(customGraph.arrayOfMoviesWithDetails.get(customGraph.getCodeOfMovie(movieName)));
+		// retrieve movie details of all the suggested movies
+		for (String movieName : suggestedMovies) {
+			jsonMovieArr.add(customGraph.arrayOfMoviesWithDetails.get(CreateGraph.getCodeOfMovie(movieName)));
 		}
-		Movie[] movieArr = customGraph.createArrayForMovies(jsonMovieArr);
+		// create a movie class array from that json array for further refinement of
+		// suggestion
+		Movie[] movieArr = CreateGraph.createArrayForMovies(jsonMovieArr);
+
+		// movies will be sorted based on rating, number of genres, number of cast
+		// present in the movie.
 		Arrays.sort(movieArr, new Comparator<Movie>() {
 			@Override
 			public int compare(Movie movie1, Movie movie2) {
@@ -152,18 +176,23 @@ public class Search {
 				}
 			}
 		});
+
+		// display suggested movies
 		System.out.println("=================================");
 		System.out.println("Suggested Movies:");
 		for (int i = 0; i < (movieArr.length >= 5 ? 5 : movieArr.length); i++) {
 			System.out.println(
-					"=> " + customGraph.getCodeOfMovie(movieArr[i].getMovieName()) + ": " + movieArr[i].getMovieName());
+					"=> " + CreateGraph.getCodeOfMovie(movieArr[i].getMovieName()) + ": " + movieArr[i].getMovieName());
 		}
 		System.out.println("=================================");
+
+		// loop over for more suggestions from any of the suggested movies.
 		System.out.println("Do you want more suggestions?");
 		System.out.println("1: Yes");
 		System.out.println("2: No");
 		System.out.print("Enter your choice: ");
 		Scanner sc = new Scanner(System.in);
+
 		int wantSuggestionAgain = sc.nextInt();
 		if (wantSuggestionAgain == 1) {
 			System.out.print("Enter the movie code as listed along side movie name: ");
@@ -173,6 +202,8 @@ public class Search {
 
 	}
 
+	// method will find movies of all the actors listed in movie we use for
+	// suggestion, from symbol graph of actorsAndMovies
 	private static Set<String> findMoviesInSymbolGraphOfActor(SymbolGraph sg, Graph G, String[] actors) {
 		Set<String> commonMovies = new HashSet<>();
 		for (String actor : actors) {
@@ -187,6 +218,8 @@ public class Search {
 		return commonMovies;
 	}
 
+	// find movies of all the genres listed in movie we use for suggestion,
+	// from symbol graph of actorsAndMovies
 	private static Set<String> findMoviesInSymbolGraphOfGenre(SymbolGraph sg, Graph G, String[] genres) {
 		Set<String> commonMovies = new HashSet<>();
 		for (String genre : genres) {
@@ -201,36 +234,30 @@ public class Search {
 		return commonMovies;
 	}
 
+	// method to search movie by movie name
 	public static void searchMovieByMovieName(CreateGraph customGraph) {
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
+
 		System.out.print("Enter the name of Movie or a keyword: ");
 		String word = sc.nextLine().strip().toLowerCase();
 		System.out.println();
-		
+
 		Set<Integer> setOfMovies = customGraph.getMovieByKeyWord(word.toLowerCase(), customGraph);
-		if (setOfMovies != null && setOfMovies.size() > 0) {		
+		if (setOfMovies != null && setOfMovies.size() > 0) {
 
 			for (int i : setOfMovies) {
 				String movieName = customGraph.getMovieFromIndex(i);
-				System.out.print(customGraph.getCodeOfMovie(movieName) + ": ");
+				System.out.print(CreateGraph.getCodeOfMovie(movieName) + ": ");
 				System.out.println(movieName);
 			}
 			System.out.println();
 			fetchMovie(customGraph);
 
-		} 
-//		else {
-//			// TODO: Edit Distance goes here.
-//			SpellChecker spellcheck = new SpellChecker();
-//			int exist = spellcheck.bymoviename(customGraph, word);
-//
-//			if (exist == 0) {
-//				System.out.println("No movies found.");
-//			}
-//		}
+		}
 	}
 
+	// method to search movie by genre
 	public static void searchMovieByGenre(CreateGraph customGraph) {
 		System.out.println();
 		System.out.println("============== List of Genre ==============");
@@ -246,6 +273,7 @@ public class Search {
 		System.out.println();
 
 		Scanner sc = new Scanner(System.in);
+
 		System.out.print("Please choose a genre: ");
 		String chosenGenre = genreIndex.get(sc.nextInt());
 
@@ -254,7 +282,7 @@ public class Search {
 		Iterable<Integer> listOfMovies = customGraph.getGraphForMoviesWithGenre()
 				.adj(customGraph.getSymbolGraphForMoviesWithGenre().index(chosenGenre));
 		for (Integer i : listOfMovies) {
-			System.out.print(customGraph.getCodeOfMovie(customGraph.getSymbolGraphForMoviesWithGenre().name(i)) + ": ");
+			System.out.print(CreateGraph.getCodeOfMovie(customGraph.getSymbolGraphForMoviesWithGenre().name(i)) + ": ");
 			System.out.println(customGraph.getSymbolGraphForMoviesWithGenre().name(i));
 		}
 
@@ -266,9 +294,11 @@ public class Search {
 
 	public void main(CreateGraph customGraph) {
 
+		// show the menu for search based on different categories
 		showMoviesMenu();
 
 		Scanner sc = new Scanner(System.in);
+
 		System.out.print("Please enter your choice: ");
 		int selectedOption = sc.nextInt();
 
