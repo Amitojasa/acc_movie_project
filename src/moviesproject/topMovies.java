@@ -16,49 +16,58 @@ public class topMovies {
 
 		System.out.println();
 		Scanner sc = new Scanner(System.in);
-		System.out.println("\nEnter number of movies that you want to get between 1 to 50:");
-		int numberOfMovies = sc.nextInt();
-		return numberOfMovies;
+		try {
+
+			System.out.println("\nEnter number of movies that you want to get between 1 to 50:");
+			int numberOfMovies = sc.nextInt();
+			return numberOfMovies;
+		} finally {
+			sc.close();
+		}
 	}
 
 	public static void fetchMovies(Movie[] arr) {
 
 		Scanner sc = new Scanner(System.in);
-		System.out.println("\nDo you want to fetch details of particular movie");
-		System.out.println("1: Yes");
-		System.out.println("2: NO");
-		System.out.println("Enter your choice:");
-		int fetchMoiveDetails = sc.nextInt();
+		try {
 
-		switch (fetchMoiveDetails) {
-		case 1:
-			System.out.println();
-			System.out.print("Enter the movie code: ");
-			int movieCode = (sc.nextInt()) - 1;
-			System.out.println();
-			System.out.println("********** Details of Movie **********");
+			System.out.println("\nDo you want to fetch details of particular movie");
+			System.out.println("1: Yes");
+			System.out.println("2: NO");
+			System.out.println("Enter your choice:");
+			int fetchMoiveDetails = sc.nextInt();
 
-			Movie movie = arr[movieCode];
+			switch (fetchMoiveDetails) {
+			case 1:
+				System.out.println();
+				System.out.print("Enter the movie code: ");
+				int movieCode = (sc.nextInt()) - 1;
+				System.out.println();
+				System.out.println("********** Details of Movie **********");
 
-			System.out.println();
+				Movie movie = arr[movieCode];
 
-			System.out.println("Name 	   : " + movie.getMovieName());
-			System.out.println("Description: " + movie.getMovieDesc());
-			System.out.println("Duration   : " + movie.getMovieDuration());
-			System.out.println("Release    : " + movie.getMovieRelease());
-			System.out.println("Rating	   : " + movie.getRating());
-			System.out.println("Genres	   : " + movie.getMovieGenres());
-			System.out.println("Cast	   : " + movie.getMovieCast());
-			break;
+				System.out.println();
 
-		case 2:
-			break;
+				System.out.println("Name 	   : " + movie.getMovieName());
+				System.out.println("Description: " + movie.getMovieDesc());
+				System.out.println("Duration   : " + movie.getMovieDuration());
+				System.out.println("Release    : " + movie.getMovieRelease());
+				System.out.println("Rating	   : " + movie.getRating());
+				System.out.println("Genres	   : " + movie.getMovieGenres());
+				System.out.println("Cast	   : " + movie.getMovieCast());
+				break;
 
-		default:
-			System.out.println("Please enter a valid choice");
-			break;
+			case 2:
+				break;
+
+			default:
+				System.out.println("Please enter a valid choice");
+				break;
+			}
+		} finally {
+			sc.close();
 		}
-
 	}
 
 	public static void printSortedMovies(int x, Movie[] arr) {
@@ -72,7 +81,7 @@ public class topMovies {
 
 		int numberOfMovies = showMenu();
 
-		Movie[] arr = customGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
+		Movie[] arr = CreateGraph.createArrayForMovies(customGraph.arrayOfMoviesWithDetails);
 
 		/// important sorting done in main
 		Arrays.sort(arr, new Comparator<Movie>() {
